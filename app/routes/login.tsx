@@ -5,6 +5,7 @@ import { authenticator } from "~/services/auth.server";
 import { FormStrategy } from "remix-auth-form";
 import invariant from "tiny-invariant";
 import { getAccountByEmail, getAccountById } from "~/models/account.server";
+import { IoLogoGoogle } from "react-icons/io5";
 
 
 
@@ -14,12 +15,23 @@ import { getAccountByEmail, getAccountById } from "~/models/account.server";
 export default function Screen() {
   return (
     <div className="min-h-screen bg-indigo-100 flex items-center">
-        <Form method="post" className="mx-auto flex flex-col justify-center space-y-3 mb-36 w-1/2">
+        <div className="mx-auto mb-36 w-1/2">
         <h1 className="text-4xl text-indigo-800 font-bold text-center pb-3">Login</h1>
+        <Form action="/auth/google" method="post">
+            <button className="text-white rounded-md px-1 py-3 my-3 text-lg bg-red-400 w-full">
+                <IoLogoGoogle size={25} className="inline mx-4" />
+                Login with Google
+            </button>
+        </Form>
+
+        <div className="text-indigo-400 w-full text-center my-4">or</div>
+
+        <Form method="post" className="flex flex-col justify-center space-y-3">
         <input 
             type="email" 
             name="email" 
             placeholder="Email"
+            autoComplete="username"
             required 
             className="p-4 rounded-md"/>
         <input
@@ -32,6 +44,7 @@ export default function Screen() {
             />
         <button className="bg-indigo-800 text-white rounded-md px-1 py-3 text-lg">Sign In</button>
         </Form>
+        </div>
     </div>
   );
 }

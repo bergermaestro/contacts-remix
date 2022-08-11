@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider             = "sqlite"
+  provider             = "mysql"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
@@ -40,6 +40,8 @@ model Contact {
   firstName      String
   lastName       String?
   email          String?
+  company        String?
+  phone          String?
   lastContacted  DateTime?
   active         Boolean
   createdAt      DateTime      @default(now())

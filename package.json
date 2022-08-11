@@ -21,6 +21,8 @@
     "react-icons": "^4.4.0",
     "remix-auth": "^3.2.2",
     "remix-auth-form": "^1.1.2",
+    "remix-auth-google": "^1.1.0",
+    "remix-auth-oauth2": "^1.3.0",
     "superjson-remix": "^0.1.2",
     "tiny-invariant": "^1.2.0",
     "zustand": "^4.0.0"
