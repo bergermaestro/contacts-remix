@@ -56,7 +56,7 @@ authenticator.use(
             {
                 clientID: process.env.CLIENT_ID!,
                 clientSecret: process.env.CLIENT_SECRET!,
-                callbackURL: "http://localhost:3000/auth/google/callback",
+                callbackURL: `${process.env.HOME_URL}/auth/google/callback`,
             },
             async ({accessToken, refreshToken, extraParams, profile}) => {
                 // Get the user data from your DB or API using the tokens and profile

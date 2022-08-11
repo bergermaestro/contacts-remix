@@ -77,7 +77,7 @@ export default function Sidebar() {
                 <Disclosure.Panel className="space-y-4 pl-7">
                   {favorites.map((favorite) => (
                     <Link
-                      to={`./${favorite.contactGroupId}/${favorite.id}`}
+                      to={`/app/groups/${favorite.contactGroupId}/${favorite.id}`}
                       key={favorite.id}
                     >
                       <div className="flex flex-row items-center cursor-pointer mb-3">
@@ -124,7 +124,7 @@ export default function Sidebar() {
                     </div>
                   </Link>
                   {groups.map((group) => (
-                    <Link key={group.id} to={`./${group.id}`}>
+                    <Link key={group.id} to={`/app/groups/${group.id}`}>
                       <div className="flex flex-row items-center cursor-pointer">
                         <div
                           className={`h-3 w-3 rounded-full inline-block mr-4 bg-${group.color}-500`}
@@ -156,10 +156,10 @@ export default function Sidebar() {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute -top-6 transform -translate-y-full my-2 w-full origin-top-righ rounded-md bg-indigo-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-clip">
-            <div className="px-1 py-3 hover:bg-indigo-600">
+            <div className="hover:bg-indigo-600">
               <Menu.Item>
                 <Form method="post" action="/app?index">
-                  <button>
+                  <button className="px-1 py-3 w-full text-left">
                     <IoLogOut size={25} className="inline mx-4" />
                     <span className="font-semibold">Sign Out</span>
                   </button>
@@ -168,10 +168,10 @@ export default function Sidebar() {
             </div>
             <div className="px-1 py-3 hover:bg-indigo-600">
               <Menu.Item>
-                <Link to="/settings">
+                <Link to="./settings">
                   <div>
                     <IoMdSettings size={25} className="inline mx-4" />
-                    <span className="font-semibold">Account Preferences</span>
+                    <span className="font-semibold">Account Settings</span>
                   </div>
                 </Link>
               </Menu.Item>
