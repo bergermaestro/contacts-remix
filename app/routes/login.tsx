@@ -31,7 +31,7 @@ export default function Screen() {
             type="email" 
             name="email" 
             placeholder="Email"
-            autoComplete="username"
+            autoComplete="email"
             required 
             className="p-4 rounded-md"/>
         <input
