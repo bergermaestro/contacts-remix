@@ -3,7 +3,6 @@ import { redirect } from '@remix-run/node'
 import { ActionFunction, LoaderFunction } from 'remix'
 import { authenticator } from '~/services/auth.server'
 
-console.log("reached /auth/google")
 
 export let loader: LoaderFunction = () => redirect('/login')
 

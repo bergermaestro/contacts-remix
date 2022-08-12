@@ -1,14 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { Contact, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
 
-export type Contact = {
-    firstName: string;
-    lastName?: string;
-    id: string;
-    isFavorite: boolean;
-    contactGroupId?: string;
-  };
 
 export async function getContacts() {
   return prisma.contact.findMany();
@@ -24,4 +17,8 @@ export async function getContact(id: string) {
 
 export async function getFavorites() {
     return prisma.contact.findMany({ where: { isFavorite: true } });
+}
+
+export async function insertContact(contact: any) {
+    return prisma.contact.create({ data: contact });
 }

@@ -15,7 +15,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function HomePage() {
     const data = useLoaderData();
-    console.log("data", data);
     return (
       <div>
           <h1>Index Page</h1>

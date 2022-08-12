@@ -36,18 +36,23 @@ authenticator.use(
     //   let user = await findOrCreateUser(username, hashedPassword);
     console.log("user", email, hashedPassword);
 
-    let user = await getAccountByEmail(email);
+    // let user = await getAccountByEmail(email);
 
     if (email === "test@gmail.com" && password === "123456") {
+        console.log("correct credentials");
       return {} as Account;
     }
-
-    if (!user) {
-      return redirect("/login");
+    else {
+        console.log("incorrect credentials");
+        return redirect("/login");
     }
 
-    // And return the user as the Authenticator expects it
-    return user;
+    // if (!user) {
+    //   return redirect("/login");
+    // }
+
+    // // And return the user as the Authenticator expects it
+    // return user;
   }),
   "user-pass"
 );
