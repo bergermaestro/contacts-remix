@@ -1,6 +1,6 @@
 const Scrollbar = () => {
   return (
-    <div className="px-8 py-12 uppercase flex flex-col space-y-3 items-center">
+    <div className="px-8 py-12 uppercase flex flex-col space-y-3 items-center max-h-screen">
         <div>a</div>
         <div>b</div>
         <div>c</div>

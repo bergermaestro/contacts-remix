@@ -8,13 +8,19 @@ import { getContactsByGroup } from "~/models/contact.server";
 import { getGroup } from "~/models/group.server";
 import { Link, Outlet } from "@remix-run/react";
 import Upcoming from "~/components/Upcoming";
+import { authenticator } from "~/services/auth.server";
 
 type LoaderData = {
   contacts: Awaited<ReturnType<typeof getContactsByGroup>>
   group: Awaited<ReturnType<typeof getGroup>>
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
+
+  let user = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  
   invariant(params.groupId, `params.groupId is required`);
 
   return json<LoaderData>({

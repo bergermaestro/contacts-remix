@@ -1,11 +1,13 @@
 // app/routes/login.tsx
 import { Form } from "@remix-run/react"
-import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node"
+import { ActionFunction, AppData, LoaderFunction, redirect } from "@remix-run/node"
 import { authenticator } from "~/services/auth.server";
 import { FormStrategy } from "remix-auth-form";
 import invariant from "tiny-invariant";
 import { getAccountByEmail, getAccountById } from "~/models/account.server";
 import { IoLogoGoogle } from "react-icons/io5";
+import { json, useLoaderData } from "superjson-remix";
+import { getSession } from "~/services/session.server";
 
 
 
@@ -13,6 +15,11 @@ import { IoLogoGoogle } from "react-icons/io5";
 // First we create our UI with the form doing a POST and the inputs with the
 // names we are going to use in the strategy
 export default function Screen() {
+  const loaderData:AppData = useLoaderData();
+  const error = loaderData.error;
+
+  console.log("error", error);
+  
   return (
     <div className="min-h-screen bg-indigo-100 flex items-center">
         <div className="mx-auto mb-36 w-1/2">
@@ -43,6 +50,7 @@ export default function Screen() {
             className="p-4 rounded-md"
             />
         <button className="bg-indigo-800 text-white rounded-md px-1 py-3 text-lg">Sign In</button>
+        <div className="font-bold my-2 text-rose-500">{error ? error.message : ''}</div>
         </Form>
         </div>
     </div>
@@ -60,7 +68,6 @@ export let action: ActionFunction = async ({ request }) => {
     failureRedirect: "/login",
   });
 
-  console.log("response", response);
   return response;
 };
 
@@ -68,8 +75,13 @@ export let action: ActionFunction = async ({ request }) => {
 // authenticated with `authenticator.isAuthenticated` and redirect to the
 // dashboard if it is or return null if it's not
 export let loader: LoaderFunction = async ({ request }) => {
-  // If the user is already authenticated redirect to /dashboard directly
-  return await authenticator.isAuthenticated(request, {
+
+  await authenticator.isAuthenticated(request, {
     successRedirect: "/app",
   });
+
+  let session = await getSession(request.headers.get("cookie"));
+  let error = session.get(authenticator.sessionErrorKey);
+  return json({ error });
+  
 };

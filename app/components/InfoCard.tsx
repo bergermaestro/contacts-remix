@@ -14,7 +14,7 @@ const InfoCard = ({contact}: {contact:Contact}) => {
     <div className="bg-indigo-100 h-3/5 py-24 px-12 ml-24 my-auto rounded-lg text-indigo-800">
 
     <h2 className="font-bold text-4xl">{contact.firstName} {contact.lastName}</h2>
-    <h4>Biffco Enterprises Ltd.</h4>
+    <h4>{contact.company}</h4>
 
     <div className="h-12"></div>
 

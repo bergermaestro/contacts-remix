@@ -6,17 +6,27 @@ import invariant from "tiny-invariant";
 import InfoCard from "~/components/InfoCard";
 import NewContactCard from "~/components/NewContactCard";
 import { getContact, insertContact } from "~/models/contact.server";
+import { authenticator } from "~/services/auth.server";
 import { useEditStore } from "~/stores/editContactStore";
 
 type LoaderData = {
     contact: Awaited<ReturnType<typeof getContact>>
+    groupId: string
   };
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
+
+  let user = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+
   invariant(params.contactId, `params.contactId is required`);
+  invariant(params.groupId, `params.groupId is required`);
+  
 
   return json<LoaderData>({
     contact: await getContact(params.contactId),
+    groupId: params.groupId,
   });
 };
 
@@ -25,7 +35,7 @@ export const action: ActionFunction = async ({
   }) => {
     const formData = await request.formData();
 
-
+    const contactGroupId = formData.get("groupId") as string;
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string
     const email = formData.get('email') as string
@@ -34,6 +44,7 @@ export const action: ActionFunction = async ({
     const instagramUsername = formData.get('instagramUsername') as string
 
     const contact = {
+      contactGroupId,
       firstName,
       lastName,
       email,
@@ -53,14 +64,12 @@ export const action: ActionFunction = async ({
 
 export default function PostSlug() {
     const isEditing = useEditStore((state) => state.isEdit);
-    const { contact } = useLoaderData() as {contact:Contact};
-
-    // console.log(contact);
+    const { contact, groupId } = useLoaderData() as {contact:Contact, groupId:string};
 
   return (
     <>
         <Outlet/>
-        {isEditing ? <NewContactCard/> :<InfoCard contact={contact} />}
+        {isEditing ? <NewContactCard groupId={groupId}/> :<InfoCard contact={contact} />}
     </>
   );
 }

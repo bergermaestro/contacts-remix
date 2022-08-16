@@ -1,6 +1,6 @@
 import { Account } from "@prisma/client";
 import { redirect, TypedResponse } from "@remix-run/node";
-import { Authenticator } from "remix-auth";
+import { Authenticator, AuthorizationError } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import { OAuth2Strategy } from "remix-auth-oauth2";
 import invariant from "tiny-invariant";
@@ -40,11 +40,11 @@ authenticator.use(
 
     if (email === "test@gmail.com" && password === "123456") {
         console.log("correct credentials");
-      return {} as Account;
+        return {} as Account;
     }
     else {
         console.log("incorrect credentials");
-        return redirect("/login");
+        throw new AuthorizationError("Bad Credentials")
     }
 
     // if (!user) {

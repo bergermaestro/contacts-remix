@@ -1,9 +1,10 @@
 import { ActionFunction } from "@remix-run/node";
 import { Form } from "@remix-run/react"
 
-const NewContactCard = () => {
+const NewContactCard = ({groupId}:{groupId:string}) => {
   return (
     <Form method="post" className="bg-indigo-100 h-3/5 py-24 px-12 ml-24 my-auto rounded-lg text-indigo-800">
+        <input hidden name="groupId" value={groupId}/>
         <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 outline-2 text-2xl"type="text" name='firstName' placeholder="First Name"/>
         <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2 text-2xl"type="text" name='lastName' placeholder="Last Name"/>
         <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='company' placeholder="Company"/>

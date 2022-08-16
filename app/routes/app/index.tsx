@@ -22,7 +22,12 @@ type LoaderData = {
      groups: Awaited<ReturnType<typeof getGroups>>
   };
   
-  export const loader = async () => {
+  export const loader:LoaderFunction = async ({ request }) => {
+
+    let user = await authenticator.isAuthenticated(request, {
+      failureRedirect: "/login",
+    });
+
     return json<LoaderData>({
       favorites: await getFavorites(),
       groups: await getGroups(),

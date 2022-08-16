@@ -6,6 +6,8 @@ import { json, useLoaderData } from 'superjson-remix';
 import { getFavorites } from "~/models/contact.server";
 import { getGroups } from "~/models/group.server";
 import Scrollbar from "~/components/Scrollbar";
+import { authenticator } from "~/services/auth.server";
+import { LoaderFunction } from "@remix-run/node";
 
 type LoaderData = {
     // this is a handy way to say: "Contacts is whatever type getContacts resolves to"
@@ -13,8 +15,12 @@ type LoaderData = {
      groups: Awaited<ReturnType<typeof getGroups>>
   };
 
-  
-  export const loader = async () => {
+  export const loader: LoaderFunction = async ({ request }) => {
+
+    let user = await authenticator.isAuthenticated(request, {
+      failureRedirect: "/login",
+    });
+
     return json<LoaderData>({
       favorites: await getFavorites(),
       groups: await getGroups(),
