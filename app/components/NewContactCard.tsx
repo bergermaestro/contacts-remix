@@ -15,7 +15,6 @@ const NewContactCard = ({groupId}:{groupId:string}) => {
           <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='email' placeholder="Email"/>
           <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='phone' placeholder="Phone Number"/>
         </div>
-
         <button type="submit" className="py-2 px-4 mr-4 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white">Save</button>
         <button className="py-2 px-4 rounded-lg border-2 border-indigo-900">Cancel</button> 
     </Form>

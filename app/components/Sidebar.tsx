@@ -11,6 +11,7 @@ import { getFavorites } from "~/models/contact.server";
 import { getGroups } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
 import { useEditStore } from "~/stores/editContactStore";
+import Modal from "./base/Modal";
 
 type LoaderData = {
   favorites: Awaited<ReturnType<typeof getFavorites>>;
@@ -49,6 +50,7 @@ export default function Sidebar() {
           <span>New Contact</span>
           <BsPlusLg />
         </button>
+        <Modal modalTitle={"Create Contact"} modalBody={<ModalBody/>} modalFooter={<ModalFooter/>}/>
         {/* <button onClick={() => createContact('matthew', 'berger', '12345678@email.com', true)} className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
         {/* <button className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
         {/* make interactive tree menus */}
@@ -189,3 +191,37 @@ export default function Sidebar() {
     </div>
   );
 }
+
+
+const ModalBody = () => (
+  <>
+   <Form method="post">
+        <input hidden name="groupId"/>
+        <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 outline-2 text-2xl"type="text" name='firstName' placeholder="First Name"/>
+        <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2 text-2xl"type="text" name='lastName' placeholder="Last Name"/>
+        <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='company' placeholder="Company"/>
+
+        <div className="mt-12">
+          <h3 className="text-2xl font-bold">Quick Info</h3>
+          <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='instagramUsername' placeholder="Username"/>
+          <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='email' placeholder="Email"/>
+          <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='phone' placeholder="Phone Number"/>
+        </div>
+
+        <button type="submit" className="py-2 px-4 mr-4 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white">Save</button>
+        <button className="py-2 px-4 rounded-lg border-2 border-indigo-900">Cancel</button> 
+    </Form>
+  </>
+  );
+
+
+  const ModalFooter = () => (
+    <>
+      <button
+        type="button"
+        className="inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+      >
+      Close Modal
+      </button>
+    </>
+  );

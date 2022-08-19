@@ -8,18 +8,16 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import tailwindstyles from "./styles/tailwind.css";
+import styles from "./styles/app.css";
 
 // https://remix.run/api/app#links
-export let links = () => {
-  return [
-    { rel: "stylesheet", href: tailwindstyles }
-  ];
-};
+export function links() {
+  return [{ rel: "stylesheet", href: styles }]
+}
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Remix Notes",
+  title: "Contacts",
   viewport: "width=device-width,initial-scale=1",
 });
 
