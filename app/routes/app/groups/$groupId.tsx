@@ -42,7 +42,8 @@ export default function PostSlug() {
         <Upcoming />
 
         <div className="text-lg">
-          {contacts.map(contact => {
+          {contacts.map(function(contact, index) {
+
             return (
               <div key={contact.id}>
                 <Link to={`./${contact.id}`}>

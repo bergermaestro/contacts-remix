@@ -33,7 +33,17 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Sidebar() {
   const { favorites, groups } = useLoaderData() as unknown as LoaderData;
   const toggleEditing = useEditStore((state) => state.toggleEdit);
-  let [isOpen, setIsOpen] = useState(true);
+
+  let [isContactOpen, setContactIsOpen] = useState(false)
+  let [isGroupOpen, setGroupIsOpen] = useState(false)
+
+  function toggleContactModal() {
+    setContactIsOpen(!isContactOpen)
+  }
+
+  function toggleGroupModal() {
+    setGroupIsOpen(!isGroupOpen)
+  }
 
   return (
     <div className="bg-indigo-800 text-white h-screen flex flex-col justify-between px-6 w-72">
@@ -43,18 +53,24 @@ export default function Sidebar() {
           className="mt-12 bg-indigo-50 px-4 py-2 rounded-md text-indigo-900"
           placeholder="Search"
         />
-        <button
+        {/* <button
           onClick={toggleEditing}
           className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"
         >
           <span>New Contact</span>
           <BsPlusLg />
+        </button> */}
+        <button
+          onClick={toggleContactModal}
+          className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"
+          >
+          <span>New Contact</span>
+          <BsPlusLg />
         </button>
-        <Modal modalTitle={"Create Contact"} modalBody={<ModalBody/>} modalFooter={<ModalFooter/>}/>
+
+        <Modal modalTitle={"Create Contact"} modalBody={<NewContactModal/>} isOpen={isContactOpen} action={toggleContactModal}/>
         {/* <button onClick={() => createContact('matthew', 'berger', '12345678@email.com', true)} className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
         {/* <button className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
-        {/* make interactive tree menus */}
-
         <Disclosure defaultOpen>
           {({ open }) => (
             <>
@@ -135,9 +151,10 @@ export default function Sidebar() {
                       </div>
                     </Link>
                   ))}
-                  <div className="font-semibold text-indigo-200 pt-6">
+                  <button className="font-semibold text-indigo-200 pt-6" onClick={toggleGroupModal}>
                     <BsPlusLg className="inline mr-3 mb-0.5" /> New Category
-                  </div>
+                  </button>
+                  <Modal modalTitle={"Create Contact Group"} modalBody={<NewGroupModal/>} isOpen={isGroupOpen} action={toggleGroupModal}/>
                 </Disclosure.Panel>
               </Transition>
             </>
@@ -176,7 +193,7 @@ export default function Sidebar() {
               </div>
               <div className="px-1 py-3 hover:bg-indigo-600">
                 <Menu.Item>
-                  <Link to="./settings">
+                  <Link to="/app/settings">
                     <div>
                       <IoMdSettings size={25} className="inline mx-4" />
                       <span className="font-semibold">Account Settings</span>
@@ -193,20 +210,29 @@ export default function Sidebar() {
 }
 
 
-const ModalBody = () => (
+const NewContactModal = () => (
   <>
-   <Form method="post">
+   <Form method="post" className="grid w-3/4 gap-4 grid-cols-[1fr_3fr]">
         <input hidden name="groupId"/>
-        <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 outline-2 text-2xl"type="text" name='firstName' placeholder="First Name"/>
-        <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2 text-2xl"type="text" name='lastName' placeholder="Last Name"/>
-        <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='company' placeholder="Company"/>
-
-        <div className="mt-12">
-          <h3 className="text-2xl font-bold">Quick Info</h3>
-          <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='instagramUsername' placeholder="Username"/>
-          <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='email' placeholder="Email"/>
-          <input className="block outline-indigo-900 bg-indigo-000 p-2 my-2 rounded-lg placeholder-indigo-400 border-2"type="text" name='phone' placeholder="Phone Number"/>
+    
+        <div className="w-32 h-32 bg-gray-400 rounded-full">
         </div>
+        <div>
+          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='firstName' placeholder="First Name"/>
+          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='lastName' placeholder="Last Name"/>
+        </div>
+
+        <span className='text-right text-gray-400 my-auto'>Company</span>
+        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='company' placeholder="Company"/>
+        
+        <span className='text-right text-gray-400 my-auto'>Username</span>
+        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='instagramUsername' placeholder="Username"/>
+
+        <span className='text-right text-gray-400 my-auto'>Email</span>
+        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='email' placeholder="Email"/>
+
+        <span className='text-right text-gray-400 my-auto'>Phone Number</span>
+        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Phone Number"/>
 
         <button type="submit" className="py-2 px-4 mr-4 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white">Save</button>
         <button className="py-2 px-4 rounded-lg border-2 border-indigo-900">Cancel</button> 
@@ -214,14 +240,15 @@ const ModalBody = () => (
   </>
   );
 
-
-  const ModalFooter = () => (
+  const NewGroupModal = () => (
     <>
-      <button
-        type="button"
-        className="inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
-      >
-      Close Modal
-      </button>
+      <Form method="post" className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">
+        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Group Name"/>
+
+        <span className='text-right text-gray-400 my-auto'>Frequency</span>
+        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Contact Frequency"/>
+
+        <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input>
+      </Form>
     </>
   );

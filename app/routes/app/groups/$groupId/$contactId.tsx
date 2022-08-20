@@ -4,10 +4,8 @@ import { Outlet } from "@remix-run/react";
 import { json, useLoaderData } from "superjson-remix";
 import invariant from "tiny-invariant";
 import InfoCard from "~/components/InfoCard";
-import NewContactCard from "~/components/NewContactCard";
 import { getContact, insertContact } from "~/models/contact.server";
 import { authenticator } from "~/services/auth.server";
-import { useEditStore } from "~/stores/editContactStore";
 
 type LoaderData = {
     contact: Awaited<ReturnType<typeof getContact>>
@@ -63,13 +61,12 @@ export const action: ActionFunction = async ({
 };
 
 export default function PostSlug() {
-    const isEditing = useEditStore((state) => state.isEdit);
     const { contact, groupId } = useLoaderData() as {contact:Contact, groupId:string};
 
   return (
     <>
         <Outlet/>
-        {isEditing ? <NewContactCard groupId={groupId}/> :<InfoCard contact={contact} />}
+        <InfoCard contact={contact} />
     </>
   );
 }

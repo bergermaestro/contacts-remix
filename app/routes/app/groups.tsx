@@ -30,9 +30,8 @@ type LoaderData = {
 export default function Groups() {
     const { favorites, groups } = useLoaderData() as unknown as LoaderData;
   return (
-    <main className="text-indigo-900 grid grid-cols-[minmax(300px,_1fr)_0.5fr_4fr_4fr]">
+    <main className="text-indigo-900 grid grid-cols-[minmax(300px,_1fr)_4fr_4fr]">
      <Sidebar/>
-     <Scrollbar/>
       <Outlet />
     </main>
   );

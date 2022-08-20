@@ -3,29 +3,12 @@ import { Fragment, useState } from 'react'
 import { BsPlusLg } from 'react-icons/bs'
 import { IoClose } from 'react-icons/io5'
 
-export default function MyModal({ modalTitle, modalBody, modalFooter } : { modalTitle: string, modalBody: JSX.Element, modalFooter: JSX.Element }) {
-  let [isOpen, setIsOpen] = useState(false)
-
-  function closeModal() {
-    setIsOpen(false)
-  }
-
-  function openModal() {
-    setIsOpen(true)
-  }
+export default function MyModal({ modalTitle, modalBody, isOpen, action } : { modalTitle: string, modalBody: JSX.Element, isOpen: boolean, action:any }) {
 
   return (
     <>
-        <button
-          onClick={openModal}
-          className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"
-        >
-          <span>New Contact</span>
-          <BsPlusLg />
-        </button>
-
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-10" onClose={action}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-200"
@@ -57,7 +40,7 @@ export default function MyModal({ modalTitle, modalBody, modalFooter } : { modal
                       >
                       { modalTitle }
                     </Dialog.Title>
-                    <a className='cursor-pointer' onClick={closeModal}><IoClose className="text-gray-300" size={35}/></a>
+                    <a className='cursor-pointer' onClick={action}><IoClose className="text-gray-300" size={35}/></a>
                   </div>
                   <div className="border-t border-gray-200"/>
                   <div className="mt-2 p-6">
@@ -65,7 +48,6 @@ export default function MyModal({ modalTitle, modalBody, modalFooter } : { modal
                   </div>
                   <div className="border-t border-gray-200"/>
                   <div className="mt-2 p-6">
-                    { modalFooter }
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

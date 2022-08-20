@@ -718,6 +718,14 @@ video {
   height: 0.75rem;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
+.h-32 {
+  height: 8rem;
+}
+
 .max-h-screen {
   max-height: 100vh;
 }
@@ -764,6 +772,18 @@ video {
 
 .w-1\/2 {
   width: 50%;
+}
+
+.w-3\/4 {
+  width: 75%;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.w-32 {
+  width: 8rem;
 }
 
 .max-w-2xl {
@@ -813,6 +833,22 @@ video {
   grid-template-columns: minmax(300px, 1fr) 0.5fr 4fr 4fr;
 }
 
+.grid-cols-\[minmax\(300px\2c _1fr\)_4fr_4fr\] {
+  grid-template-columns: minmax(300px, 1fr) 4fr 4fr;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-\[1fr_2fr\] {
+  grid-template-columns: 1fr 2fr;
+}
+
+.grid-cols-\[1fr_3fr\] {
+  grid-template-columns: 1fr 3fr;
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -835,6 +871,18 @@ video {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 
 .space-y-3 > :not([hidden]) ~ :not([hidden]) {
@@ -979,6 +1027,11 @@ video {
   background-color: rgb(248 113 113 / var(--tw-bg-opacity));
 }
 
+.bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-60 {
   --tw-bg-opacity: 0.6;
 }
@@ -1077,6 +1130,10 @@ video {
   text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .align-middle {
   vertical-align: middle;
 }
@@ -1170,6 +1227,11 @@ video {
   color: rgb(209 213 219 / var(--tw-text-opacity));
 }
 
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
 .placeholder-indigo-400::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(129 140 248 / var(--tw-placeholder-opacity));
@@ -1178,6 +1240,16 @@ video {
 .placeholder-indigo-400::placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(129 140 248 / var(--tw-placeholder-opacity));
+}
+
+.placeholder-gray-400::-moz-placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-placeholder-opacity));
+}
+
+.placeholder-gray-400::placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-placeholder-opacity));
 }
 
 .opacity-0 {
@@ -1200,6 +1272,14 @@ video {
 
 .outline-indigo-900 {
   outline-color: #312e81;
+}
+
+.outline-gray-900 {
+  outline-color: #111827;
+}
+
+.outline-gray-400 {
+  outline-color: #9ca3af;
 }
 
 .ring-1 {
