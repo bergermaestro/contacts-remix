@@ -1,7 +1,8 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { ContactGroup } from "@prisma/client";
 import { ActionFunction } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
-import { Fragment, useState } from "react";
+import { Form, Link , useTransition} from "@remix-run/react";
+import { Fragment, TransitionEvent, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
@@ -32,7 +33,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Sidebar() {
   const { favorites, groups } = useLoaderData() as unknown as LoaderData;
-  const toggleEditing = useEditStore((state) => state.toggleEdit);
 
   let [isContactOpen, setContactIsOpen] = useState(false)
   let [isGroupOpen, setGroupIsOpen] = useState(false)
@@ -68,7 +68,7 @@ export default function Sidebar() {
           <BsPlusLg />
         </button>
 
-        <Modal modalTitle={"Create Contact"} modalBody={<NewContactModal/>} isOpen={isContactOpen} action={toggleContactModal}/>
+        <Modal modalTitle={"Create Contact"} modalBody={<NewContactModal groups={groups} toggleContactModal={toggleContactModal}/>} isOpen={isContactOpen} action={toggleContactModal}/>
         {/* <button onClick={() => createContact('matthew', 'berger', '12345678@email.com', true)} className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
         {/* <button className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
         <Disclosure defaultOpen>
@@ -210,45 +210,64 @@ export default function Sidebar() {
 }
 
 
-const NewContactModal = () => (
+const NewContactModal = ({ groups, toggleContactModal } : { groups:ContactGroup[], toggleContactModal:VoidFunction }) => (
   <>
-   <Form method="post" className="grid w-3/4 gap-4 grid-cols-[1fr_3fr]">
-        <input hidden name="groupId"/>
-    
-        <div className="w-32 h-32 bg-gray-400 rounded-full">
+   <Form method="post">
+      <input hidden name="action" value="addContact"></input>
+      <fieldset>
+        <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">    
+          <div className="w-24 h-24 bg-gray-400 rounded-full">
+          </div>
+          <div>
+            <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='firstName' placeholder="First Name"/>
+            <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='lastName' placeholder="Last Name"/>
+          </div>
+
+          <label htmlFor='groupId' className='text-right text-gray-400 my-auto'>Group</label>
+          <select className="block outline-gray-400 p-2 rounded-lg placeholder-gray-400 border" placeholder="Group" name="groupId">
+            <option value="">- Select Group -</option>
+            {groups.map((group) => (
+              <option key={group.id} value={group.id}>{group.groupName}</option>
+              ))}
+          </select>
+
+          <label htmlFor='company' className='text-right text-gray-400 my-auto'>Company</label>
+          <input className="block outline-gray-400 p-2 rounded-lg placeholder-gray-400 border"type="text" name='company' placeholder="Company"/>
+          
+          <label htmlFor='instagramUsername' className='text-right text-gray-400 my-auto'>Username</label>
+          <input className="block outline-gray-400 p-2 rounded-lg placeholder-gray-400 border"type="text" name='instagramUsername' placeholder="Username"/>
+
+          <label htmlFor='email' className='text-right text-gray-400 my-auto'>Email</label>
+          <input className="block outline-gray-400 p-2 rounded-lg placeholder-gray-400 border"type="text" name='email' placeholder="Email"/>
+
+          <label htmlFor='' className='text-right text-gray-400 my-auto'>Phone</label>
+          <input className="block outline-gray-400 p-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Phone"/>
+        </div>  
+        <div className="mt-6">
+            <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white" onClick={toggleContactModal}>Save</button>
+            <button className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleContactModal}>Cancel</button> 
         </div>
-        <div>
-          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='firstName' placeholder="First Name"/>
-          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='lastName' placeholder="Last Name"/>
-        </div>
-
-        <span className='text-right text-gray-400 my-auto'>Company</span>
-        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='company' placeholder="Company"/>
-        
-        <span className='text-right text-gray-400 my-auto'>Username</span>
-        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='instagramUsername' placeholder="Username"/>
-
-        <span className='text-right text-gray-400 my-auto'>Email</span>
-        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='email' placeholder="Email"/>
-
-        <span className='text-right text-gray-400 my-auto'>Phone Number</span>
-        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Phone Number"/>
-
-        <button type="submit" className="py-2 px-4 mr-4 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white">Save</button>
-        <button className="py-2 px-4 rounded-lg border-2 border-indigo-900">Cancel</button> 
+      </fieldset>
     </Form>
   </>
   );
 
-  const NewGroupModal = () => (
+  const NewGroupModal = ({ toggleGroupModal } : { toggleGroupModal:VoidFunction }) => (
     <>
-      <Form method="post" className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">
-        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Group Name"/>
+      <Form method="post">
+        <input hidden name="action" value="addGroup"></input>
+        <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">  
+          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Group Name"/>
 
-        <span className='text-right text-gray-400 my-auto'>Frequency</span>
-        <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Contact Frequency"/>
+          <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Frequency</label>
+          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='frequency' placeholder="Contact Frequency"/>
 
-        <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input>
+          <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input>
+        </div>
+        <div className="mt-6">
+            <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white" onClick={toggleGroupModal}>Save</button>
+            <button className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleGroupModal}>Cancel</button> 
+        </div>
       </Form>
     </>
   );

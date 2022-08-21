@@ -35,7 +35,6 @@ type LoaderData = {
   };
 
 export default function Groups() {
-    const { favorites, groups } = useLoaderData() as unknown as LoaderData;
   return (
     <div>
      <Sidebar/>

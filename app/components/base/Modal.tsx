@@ -1,4 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { useTransition } from '@remix-run/react';
 import { Fragment, useState } from 'react'
 import { BsPlusLg } from 'react-icons/bs'
 import { IoClose } from 'react-icons/io5'
@@ -45,9 +46,6 @@ export default function MyModal({ modalTitle, modalBody, isOpen, action } : { mo
                   <div className="border-t border-gray-200"/>
                   <div className="mt-2 p-6">
                     { modalBody }
-                  </div>
-                  <div className="border-t border-gray-200"/>
-                  <div className="mt-2 p-6">
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
