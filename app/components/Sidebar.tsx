@@ -195,7 +195,7 @@ const NewContactModal = ({ groups, toggleContactModal } : { groups:ContactGroup[
           </div>
           <div>
             <input className="outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='firstName' placeholder="First Name"/>
-            <input className="inline p-2 ml-2 h-6 w-6" type="checkbox" name="isFavorite"></input>
+            <input className="inline p-2 ml-2 h-8 w-8" type="checkbox" name="isFavorite"></input>
             <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='lastName' placeholder="Last Name"/>
           </div>
 
