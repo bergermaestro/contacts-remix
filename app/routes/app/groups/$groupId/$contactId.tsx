@@ -1,5 +1,5 @@
 import { Contact } from "@prisma/client";
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { LoaderFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 import { json, useLoaderData } from "superjson-remix";
 import invariant from "tiny-invariant";
@@ -14,7 +14,7 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ params, request }) => {
 
-  let user = await authenticator.isAuthenticated(request, {
+  await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
 
@@ -29,7 +29,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function PostSlug() {
-    const { contact, groupId } = useLoaderData() as {contact:Contact, groupId:string};
+    const { contact } = useLoaderData();
 
   return (
     <>

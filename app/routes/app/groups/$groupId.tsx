@@ -1,15 +1,12 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { json } from 'superjson-remix';
-import { useLoaderData } from 'superjson-remix';
-import invariant from "tiny-invariant";
+import { Link, Outlet } from "@remix-run/react";
 import { FiClock } from "react-icons/fi";
-
+import { json, useLoaderData } from 'superjson-remix';
+import invariant from "tiny-invariant";
+import Upcoming from "~/components/Upcoming";
 import { getContactsByGroup } from "~/models/contact.server";
 import { getGroup } from "~/models/group.server";
-import { Link, Outlet } from "@remix-run/react";
-import Upcoming from "~/components/Upcoming";
 import { authenticator } from "~/services/auth.server";
-import Modal from "~/components/base/Modal";
 
 type LoaderData = {
   contacts: Awaited<ReturnType<typeof getContactsByGroup>>

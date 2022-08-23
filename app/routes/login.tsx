@@ -1,24 +1,13 @@
-// app/routes/login.tsx
-import { Form } from "@remix-run/react"
-import { ActionFunction, AppData, LoaderFunction, redirect } from "@remix-run/node"
-import { authenticator } from "~/services/auth.server";
-import { FormStrategy } from "remix-auth-form";
-import invariant from "tiny-invariant";
-import { getAccountByEmail, getAccountById } from "~/models/account.server";
+import { ActionFunction, AppData, LoaderFunction } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 import { IoLogoGoogle } from "react-icons/io5";
 import { json, useLoaderData } from "superjson-remix";
+import { authenticator } from "~/services/auth.server";
 import { getSession } from "~/services/session.server";
 
-
-
-
-// First we create our UI with the form doing a POST and the inputs with the
-// names we are going to use in the strategy
 export default function Screen() {
   const loaderData:AppData = useLoaderData();
   const error = loaderData.error;
-
-  console.log("error", error);
   
   return (
     <div className="min-h-screen bg-indigo-100 flex items-center">
@@ -57,8 +46,6 @@ export default function Screen() {
   );
 }
 
-// Second, we need to export an action function, here we will use the
-// `authenticator.authenticate method`
 export let action: ActionFunction = async ({ request }) => {
   // we call the method with the name of the strategy we want to use and the
   // request object, optionally we pass an object with the URLs we want the user

@@ -9,7 +9,6 @@ export let loader: LoaderFunction = async ({ request }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-    console.log("attemping logout");
     await authenticator.logout(request, { redirectTo: "/login" });
   };
 

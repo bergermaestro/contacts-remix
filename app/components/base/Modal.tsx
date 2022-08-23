@@ -1,8 +1,6 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { useTransition } from '@remix-run/react';
-import { Fragment, useState } from 'react'
-import { BsPlusLg } from 'react-icons/bs'
-import { IoClose } from 'react-icons/io5'
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { IoClose } from 'react-icons/io5';
 
 export default function MyModal({ modalTitle, modalBody, isOpen, action } : { modalTitle: string, modalBody: JSX.Element, isOpen: boolean, action:any }) {
 

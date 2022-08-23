@@ -15,16 +15,9 @@ export async function getAccountByEmail(email:string) {
 }
 
 export async function findOrCreate(account: any) {
-
-    // console.log("account", account)
-    
     const hasAccount = await prisma.account.findUnique({ where: { email: account.emails[0].value } });
 
-    // console.log("hasAccount", hasAccount)
-
     if(hasAccount) {
-        console.log(hasAccount.id);
-        // do something in the context I guess so that we can know the user details?
         return hasAccount;
     }
 

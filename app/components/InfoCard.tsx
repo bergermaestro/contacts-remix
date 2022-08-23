@@ -1,4 +1,3 @@
-// import { useEditStore } from "stores/editContactStore";
 import { Contact } from "@prisma/client";
 
 const InfoCard = ({contact}: {contact:Contact}) => {
