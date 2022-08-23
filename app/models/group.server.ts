@@ -9,8 +9,8 @@ export type Group = {
     color: string;
 };
 
-export async function getGroups() {
-    return prisma.contactGroup.findMany();
+export async function getGroups(accountId: string) {
+    return prisma.contactGroup.findMany({ where: {accountId} });
 }
 
 export async function getGroup(id: string) {
@@ -18,5 +18,6 @@ export async function getGroup(id: string) {
 }
 
 export async function insertGroup(group: any) {
+    console.log("\n\n\nGROUP", group);
     return prisma.contactGroup.create({ data: group });
 }

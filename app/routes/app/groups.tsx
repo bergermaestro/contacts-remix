@@ -9,22 +9,26 @@ import { getGroups, insertGroup } from "~/models/group.server";
 import Scrollbar from "~/components/Scrollbar";
 import { authenticator } from "~/services/auth.server";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { Account, ContactGroup } from "@prisma/client";
 
 type LoaderData = {
     // this is a handy way to say: "Contacts is whatever type getContacts resolves to"
      favorites: Awaited<ReturnType<typeof getFavorites>>;
      groups: Awaited<ReturnType<typeof getGroups>>
+     user: Account
   };
 
   export const loader: LoaderFunction = async ({ request }) => {
-
     let user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/login",
     });
 
+    console.log("USER", user)
+
     return json<LoaderData>({
-      favorites: await getFavorites(),
-      groups: await getGroups(),
+      favorites: await getFavorites(user.id),
+      groups: await getGroups(user.id),
+      user: user
     });
   };
 
@@ -33,6 +37,9 @@ export const action: ActionFunction = async ({
   request, 
   }) => {
     const formData = await request.formData();
+    const { favorites, groups, user } = useLoaderData()
+
+    user.firstName
 
     const action = formData.get("action");
 
@@ -48,6 +55,7 @@ export const action: ActionFunction = async ({
       const instagramUsername = formData.get('instagramUsername') as string
   
       const contact = {
+        accountId: user.id,
         contactGroupId,
         firstName,
         lastName,
@@ -67,13 +75,15 @@ export const action: ActionFunction = async ({
     }
     else if (action === 'addGroup') {
       const groupName = formData.get('groupName') as string;
+      const contactFrequency = parseInt(formData.get('contactFrequency') as string);
 
       console.log("groupName", groupName);
+      console.log("contactFrequency", contactFrequency);
 
       const contactGroup = {
+        accountId: user.id, 
         groupName,
-        contactFrequency: 0,
-        contacts: [],
+        contactFrequency,
         color: 'blue'
       }
 
@@ -84,10 +94,11 @@ export const action: ActionFunction = async ({
 };
 
 export default function Groups() {
-    const { favorites, groups } = useLoaderData() as unknown as LoaderData;
+  const { favorites, groups } = useLoaderData();
+
   return (
     <main className="text-indigo-900 grid grid-cols-[minmax(300px,_1fr)_4fr_4fr]">
-     <Sidebar/>
+     <Sidebar favorites={favorites} groups={groups}/>
       <Outlet />
     </main>
   );

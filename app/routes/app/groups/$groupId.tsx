@@ -31,8 +31,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function PostSlug() {
-  const { contacts, group } = useLoaderData() as LoaderData || {};
-
+  const { contacts, group } = useLoaderData() as LoaderData;
   return (
     <>
     <div className="mx-auto max-w-4xl">
@@ -43,7 +42,6 @@ export default function PostSlug() {
 
         <div className="text-lg">
           {contacts.map(function(contact, index) {
-
             return (
               <div key={contact.id}>
                 <Link to={`./${contact.id}`}>

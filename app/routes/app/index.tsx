@@ -24,20 +24,23 @@ type LoaderData = {
   
   export const loader:LoaderFunction = async ({ request }) => {
 
-    let user = await authenticator.isAuthenticated(request, {
+    const user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/login",
     });
 
     return json<LoaderData>({
-      favorites: await getFavorites(),
-      groups: await getGroups(),
+      favorites: await getFavorites(user.id),
+      groups: await getGroups(user.id),
     });
   };
 
 export default function Groups() {
+
+  const { favorites, groups } = useLoaderData();
+
   return (
     <div>
-     <Sidebar/>
+     <Sidebar favorites={favorites} groups={groups}/>
       <Outlet />
     </div>
   );

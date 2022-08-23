@@ -4,14 +4,14 @@ import { Authenticator, AuthorizationError } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import { OAuth2Strategy } from "remix-auth-oauth2";
 import invariant from "tiny-invariant";
-import { getAccountByEmail } from "~/models/account.server";
+import { findOrCreate, getAccountByEmail } from "~/models/account.server";
 import { sessionStorage } from "~/services/session.server";
 import { GoogleStrategy } from "remix-auth-google";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-export let authenticator = new Authenticator<Account | TypedResponse<never>>(
-  sessionStorage
+export let authenticator = new Authenticator<Account>(
+  sessionStorage,
 );
 
 authenticator.use(
@@ -67,8 +67,10 @@ authenticator.use(
     async ({ accessToken, refreshToken, extraParams, profile }) => {
       // Get the user data from your DB or API using the tokens and profile
       console.log("login with google worked");
-      return {} as Account;
-      //   return User.findOrCreate({ email: profile.emails[0].value });
+      console.log("profile.emails[0].value", profile.emails[0].value )
+      console.log("profile", profile)
+
+      return findOrCreate(profile);
     }
   ),
   "google-oauth"

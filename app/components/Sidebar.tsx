@@ -1,41 +1,25 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { ContactGroup } from "@prisma/client";
+import { Contact, ContactGroup } from "@prisma/client";
 import { ActionFunction } from "@remix-run/node";
-import { Form, Link , useTransition} from "@remix-run/react";
-import { Fragment, TransitionEvent, useState } from "react";
+import { Form, Link } from "@remix-run/react";
+import { Fragment, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { json, useLoaderData } from "superjson-remix";
-import { getFavorites } from "~/models/contact.server";
-import { getGroups } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
-import { useEditStore } from "~/stores/editContactStore";
 import Modal from "./base/Modal";
-
-type LoaderData = {
-  favorites: Awaited<ReturnType<typeof getFavorites>>;
-  groups: Awaited<ReturnType<typeof getGroups>>;
-};
-
-export const loader = async () => {
-  return json<LoaderData>({
-    favorites: await getFavorites(),
-    groups: await getGroups(),
-  });
-};
 
 export const action: ActionFunction = async ({ request }) => {
   console.log("attemping logout");
   await authenticator.logout(request, { redirectTo: "/login" });
 };
 
-export default function Sidebar() {
-  const { favorites, groups } = useLoaderData() as unknown as LoaderData;
+export default function Sidebar({ favorites, groups } : { favorites:Contact[], groups:ContactGroup[] }) {
 
   let [isContactOpen, setContactIsOpen] = useState(false)
   let [isGroupOpen, setGroupIsOpen] = useState(false)
+  const [contactFrequency, setContactFrequency] = useState("Weeks")
 
   function toggleContactModal() {
     setContactIsOpen(!isContactOpen)
@@ -53,13 +37,6 @@ export default function Sidebar() {
           className="mt-12 bg-indigo-50 px-4 py-2 rounded-md text-indigo-900"
           placeholder="Search"
         />
-        {/* <button
-          onClick={toggleEditing}
-          className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"
-        >
-          <span>New Contact</span>
-          <BsPlusLg />
-        </button> */}
         <button
           onClick={toggleContactModal}
           className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"
@@ -69,8 +46,6 @@ export default function Sidebar() {
         </button>
 
         <Modal modalTitle={"Create Contact"} modalBody={<NewContactModal groups={groups} toggleContactModal={toggleContactModal}/>} isOpen={isContactOpen} action={toggleContactModal}/>
-        {/* <button onClick={() => createContact('matthew', 'berger', '12345678@email.com', true)} className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
-        {/* <button className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"><span>New Contact</span><BsPlusLg/></button> */}
         <Disclosure defaultOpen>
           {({ open }) => (
             <>
@@ -154,7 +129,7 @@ export default function Sidebar() {
                   <button className="font-semibold text-indigo-200 pt-6" onClick={toggleGroupModal}>
                     <BsPlusLg className="inline mr-3 mb-0.5" /> New Category
                   </button>
-                  <Modal modalTitle={"Create Contact Group"} modalBody={<NewGroupModal/>} isOpen={isGroupOpen} action={toggleGroupModal}/>
+                  <Modal modalTitle={"Create Contact Group"} modalBody={<NewGroupModal toggleGroupModal={toggleGroupModal} contactFrequency={contactFrequency} setContactFrequency={setContactFrequency}/>} isOpen={isGroupOpen} action={toggleGroupModal}/>
                 </Disclosure.Panel>
               </Transition>
             </>
@@ -245,28 +220,62 @@ const NewContactModal = ({ groups, toggleContactModal } : { groups:ContactGroup[
         </div>  
         <div className="mt-6">
             <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white" onClick={toggleContactModal}>Save</button>
-            <button className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleContactModal}>Cancel</button> 
+            <button type="button" className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleContactModal}>Cancel</button> 
         </div>
       </fieldset>
     </Form>
   </>
   );
 
-  const NewGroupModal = ({ toggleGroupModal } : { toggleGroupModal:VoidFunction }) => (
+  const NewGroupModal = ({ toggleGroupModal, contactFrequency, setContactFrequency } : { toggleGroupModal:VoidFunction, contactFrequency:string, setContactFrequency:any }) => (
     <>
       <Form method="post">
         <input hidden name="action" value="addGroup"></input>
-        <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">  
-          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='phone' placeholder="Group Name"/>
+        <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]"> 
+          <div></div> 
+          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='groupName' placeholder="Group Name"/>
 
           <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Frequency</label>
-          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='frequency' placeholder="Contact Frequency"/>
+        <div className="flex outline-gray-400 border my-2 rounded-lg">
+          <input className="block rounded-lg placeholder-gray-400 p-2 "type="text" name='contactFrequency' placeholder="Contact Frequency"/>
+          <select className="block rounded-lg placeholder-gray-400 p-2 ml-auto" placeholder="Group" name="groupId">
+            <option value="days">Days</option>
+            <option value="weeks">Weeks</option>
+            <option value="months">Months</option>
+            <option value="years">Years</option>
+          </select>
+        </div>
 
-          <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input>
+        {/* <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input> */}
+
+        {/* <Listbox value={contactFrequency} onChange={setContactFrequency} name="contactFrequency">
+        <div className="relative mt-1">
+          <Listbox.Button className="relative w-full cursor-pointer rounded-md py-2 pl-3 pr-10 outline-gray-400 border">
+            <div className="">Test String</div>
+            <HiOutlineSelector/>
+            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            </span>
+          </Listbox.Button>
+          <Transition
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Option value='1'>1</Listbox.Option>
+              <Listbox.Option value='2'>2</Listbox.Option>
+              <Listbox.Option value='3'>3</Listbox.Option>
+            </Listbox.Options>
+          </Transition>
+        </div>
+      </Listbox> */}
+
+
         </div>
         <div className="mt-6">
             <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white" onClick={toggleGroupModal}>Save</button>
-            <button className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleGroupModal}>Cancel</button> 
+            <button type="button" className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleGroupModal}>Cancel</button> 
         </div>
       </Form>
     </>

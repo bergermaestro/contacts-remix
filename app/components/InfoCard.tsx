@@ -2,8 +2,6 @@
 import { Contact } from "@prisma/client";
 
 const InfoCard = ({contact}: {contact:Contact}) => {
-
-  // console.log("contact from component", contact)
   if(!contact) {
     return (
       <div>Oops, no contact found!</div>
