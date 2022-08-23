@@ -1,5 +1,3 @@
-import React, { ReactComponentElement, ReactHTMLElement } from "react"
-
 const Button = (action:() => void, content:string) => {
   return (
         <button onClick={action} 
