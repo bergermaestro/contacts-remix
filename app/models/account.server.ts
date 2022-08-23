@@ -1,4 +1,5 @@
 import { Account, PrismaClient } from '@prisma/client';
+import cuid from 'cuid';
 
 const prisma = new PrismaClient()
 
@@ -23,6 +24,7 @@ export async function findOrCreate(account: any) {
 
     else {
         const accountFormatted = {
+            id: cuid(),
             firstName: account.name.givenName,
             lastName: account.name.familyName,
             email: account.emails[0].value,
