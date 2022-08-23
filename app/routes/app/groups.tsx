@@ -6,6 +6,8 @@ import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { getFavorites, insertContact } from "~/models/contact.server";
 import { getGroups, insertGroup } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
+import { getSession } from "~/services/session.server";
+import { text2bool } from "~/utils/serde";
 
 type LoaderData = {
      favorites: Awaited<ReturnType<typeof getFavorites>>;
@@ -30,9 +32,11 @@ export const action: ActionFunction = async ({
   request, 
   }) => {
     const formData = await request.formData();
-    const { user } = useLoaderData()
+    const session = await getSession(
+      request.headers.get("Cookie")
+    );
 
-    user.firstName
+    const user = session.data.user;
 
     const action = formData.get("action");
 
@@ -43,7 +47,10 @@ export const action: ActionFunction = async ({
       const email = formData.get('email') as string
       const company = formData.get('company') as string
       const phone = formData.get('phone') as string
+      const isFavorite = text2bool(formData.get('isFavorite') as string)
       const instagramUsername = formData.get('instagramUsername') as string
+
+      console.log("isFavorite", isFavorite);
   
       const contact = {
         accountId: user.id,
@@ -54,7 +61,7 @@ export const action: ActionFunction = async ({
         company,
         phone,
         active:true,
-        isFavorite:false
+        isFavorite
       }
 
       await insertContact(contact);

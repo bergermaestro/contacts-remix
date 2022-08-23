@@ -46,13 +46,6 @@ authenticator.use(
         console.log("incorrect credentials");
         throw new AuthorizationError("Bad Credentials")
     }
-
-    // if (!user) {
-    //   return redirect("/login");
-    // }
-
-    // // And return the user as the Authenticator expects it
-    // return user;
   }),
   "user-pass"
 );
@@ -65,11 +58,6 @@ authenticator.use(
       callbackURL: `${process.env.HOME_URL}/auth/google/callback`,
     },
     async ({ accessToken, refreshToken, extraParams, profile }) => {
-      // Get the user data from your DB or API using the tokens and profile
-      console.log("login with google worked");
-      console.log("profile.emails[0].value", profile.emails[0].value )
-      console.log("profile", profile)
-
       return findOrCreate(profile);
     }
   ),

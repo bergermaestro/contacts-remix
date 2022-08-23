@@ -36,7 +36,7 @@ model Session {
 }
 
 model Contact {
-  accountId      String         
+  accountId      String        
   id             String        @id @default(cuid())
   firstName      String
   lastName       String?
@@ -53,7 +53,7 @@ model Contact {
 }
 
 model ContactGroup {
-  accountId        String  
+  accountId        String 
   id               String    @id @default(cuid())
   groupName        String
   contactFrequency BigInt

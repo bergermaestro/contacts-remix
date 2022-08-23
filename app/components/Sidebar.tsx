@@ -188,13 +188,14 @@ export default function Sidebar({ favorites, groups } : { favorites:Contact[], g
 const NewContactModal = ({ groups, toggleContactModal } : { groups:ContactGroup[], toggleContactModal:VoidFunction }) => (
   <>
    <Form method="post">
-      <input hidden name="action" value="addContact"></input>
+      <input readOnly hidden name="action" value="addContact"></input>
       <fieldset>
         <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">    
           <div className="w-24 h-24 bg-gray-400 rounded-full">
           </div>
           <div>
-            <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='firstName' placeholder="First Name"/>
+            <input className="outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='firstName' placeholder="First Name"/>
+            <input className="inline p-2 ml-2" type="checkbox" name="isFavorite"></input>
             <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='lastName' placeholder="Last Name"/>
           </div>
 
@@ -230,7 +231,7 @@ const NewContactModal = ({ groups, toggleContactModal } : { groups:ContactGroup[
   const NewGroupModal = ({ toggleGroupModal, contactFrequency, setContactFrequency } : { toggleGroupModal:VoidFunction, contactFrequency:string, setContactFrequency:any }) => (
     <>
       <Form method="post">
-        <input hidden name="action" value="addGroup"></input>
+        <input readOnly hidden name="action" value="addGroup"></input>
         <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]"> 
           <div></div> 
           <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='groupName' placeholder="Group Name"/>
