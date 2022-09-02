@@ -5,11 +5,12 @@ import { json, useLoaderData } from "superjson-remix";
 import invariant from "tiny-invariant";
 import InfoCard from "~/components/InfoCard";
 import { getContact } from "~/models/contact.server";
+import { getGroups } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
 
 type LoaderData = {
     contact: Awaited<ReturnType<typeof getContact>>
-    groupId: string
+    groups: Awaited<ReturnType<typeof getGroups>>
   };
 
 export const loader: LoaderFunction = async ({ params, request }) => {
@@ -24,17 +25,19 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   return json<LoaderData>({
     contact: await getContact(params.contactId),
-    groupId: params.groupId,
+    groups: await getGroups(params.groupId),
   });
 };
 
 export default function PostSlug() {
-    const { contact } = useLoaderData();
+  const { contact, groups } = useLoaderData();
+    
+  console.log("CONTACT", contact);
 
   return (
     <>
         <Outlet/>
-        <InfoCard contact={contact} />
+        <InfoCard contact={contact} groups={groups}/>
     </>
   );
 }

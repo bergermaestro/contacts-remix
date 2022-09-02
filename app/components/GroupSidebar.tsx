@@ -16,6 +16,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function GroupSidebar({ favorites, groups } : { favorites:Contact[], groups:ContactGroup[] }) {
   const toggleContactModal = ContactStore((state) => state.toggle)
+
   let [isGroupOpen, setGroupIsOpen] = useState(false)
   const [contactFrequency, setContactFrequency] = useState("Weeks")
 
