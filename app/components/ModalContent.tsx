@@ -87,7 +87,7 @@ export const NewContactModal = ({
             type="text"
             name="email"
             placeholder="Email"
-            value={contact.email}
+            defaultValue={contact.email}
           />
 
           <label htmlFor="" className="text-right text-gray-400 my-auto">
@@ -98,7 +98,7 @@ export const NewContactModal = ({
             type="text"
             name="phone"
             placeholder="Phone"
-            value={contact.phone}
+            defaultValue={contact.phone}
           />
         </div>
         <div className="mt-6">
