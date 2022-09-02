@@ -1,5 +1,5 @@
 import { Outlet } from "@remix-run/react";
-import Sidebar from "~/components/Sidebar";
+import GroupSidebar from "~/components/GroupSidebar";
 import { json, useLoaderData } from 'superjson-remix';
 import { Account } from "@prisma/client";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
@@ -91,9 +91,9 @@ export default function Groups() {
   const { favorites, groups } = useLoaderData();
 
   return (
-    <main className="text-indigo-900 grid grid-cols-[minmax(300px,_1fr)_4fr_4fr]">
-     <Sidebar favorites={favorites} groups={groups}/>
+    <div className="grid grid-cols-[minmax(300px,_1fr)_4fr_4fr]">
+     <GroupSidebar favorites={favorites} groups={groups}/>
       <Outlet />
-    </main>
+    </div>
   );
 }

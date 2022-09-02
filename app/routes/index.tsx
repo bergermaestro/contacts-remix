@@ -16,7 +16,7 @@ export default function HomePage() {
     const data = useLoaderData();
     return (
       <div>
-          <h1>Index Page</h1>
+          <h1 className="text-3xl text-indigo-600 font-bold text-center p-12">Welcome to Contactly</h1>
       </div>
     );
   }

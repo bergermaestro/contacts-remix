@@ -1,6 +1,9 @@
 import { Contact } from "@prisma/client";
+import { ContactStore } from "~/stores/stateStore";
 
 const InfoCard = ({contact}: {contact:Contact}) => {
+  const toggleContactModal = ContactStore((state) => state.toggle)
+  
   if(!contact) {
     return (
       <div>Oops, no contact found!</div>
@@ -28,6 +31,9 @@ const InfoCard = ({contact}: {contact:Contact}) => {
 
     <h3 className="font-semibold text-3xl">Notes</h3>
     <p className="w-2/3 leading-tight">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p>
+    
+    <button className="px-4 py-2 border-2 border-indigo-800 rounded-lg text-indigo-800 font-bold my-4" onClick={toggleContactModal}>Edit</button>
+    
     </div>
   )
 }

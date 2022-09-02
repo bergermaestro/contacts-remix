@@ -1,7 +1,7 @@
-import { Outlet } from "@remix-run/react";
-import Sidebar from "~/components/Sidebar";
-import { json, useLoaderData } from 'superjson-remix';
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { Outlet } from "@remix-run/react";
+import { json, useLoaderData } from 'superjson-remix';
+import GroupSidebar from "~/components/GroupSidebar";
 import { getFavorites } from "~/models/contact.server";
 import { getGroups } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
@@ -35,7 +35,6 @@ export default function Groups() {
 
   return (
     <div>
-     <Sidebar favorites={favorites} groups={groups}/>
       <Outlet />
     </div>
   );
