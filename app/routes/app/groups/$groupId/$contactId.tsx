@@ -31,8 +31,6 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 export default function PostSlug() {
   const { contact, groups } = useLoaderData();
-    
-  console.log("CONTACT", contact);
 
   return (
     <>

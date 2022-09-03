@@ -1,3 +1,4 @@
+import { Tooltip } from "@mantine/core";
 import { ContactGroup } from "@prisma/client";
 import { Form } from "@remix-run/react";
 
@@ -24,11 +25,13 @@ export const NewContactModal = ({
               placeholder="First Name"
               defaultValue={contact.firstName}
             />
-            <input
-              className="inline p-2 ml-2 h-8 w-8"
-              type="checkbox"
-              name="isFavorite"
-            ></input>
+            <Tooltip label="Favorite this Contact" color="gray" withArrow>
+              <input
+                className="inline p-2 ml-2 h-8 w-8"
+                type="checkbox"
+                name="isFavorite"
+              ></input>
+            </Tooltip>
             <input
               className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"
               type="text"
@@ -76,7 +79,6 @@ export const NewContactModal = ({
             type="text"
             name="instagramUsername"
             placeholder="Username"
-
           />
 
           <label htmlFor="email" className="text-right text-gray-400 my-auto">

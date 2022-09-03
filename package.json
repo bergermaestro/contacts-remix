@@ -10,7 +10,12 @@
     "start": "remix-serve build"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/server": "^11.10.0",
     "@headlessui/react": "^1.6.6",
+    "@mantine/core": "^5.2.4",
+    "@mantine/hooks": "^5.2.4",
+    "@mantine/remix": "^5.2.4",
     "@prisma/client": "^4.1.1",
     "@remix-run/node": "^1.6.7",
     "@remix-run/react": "^1.6.7",

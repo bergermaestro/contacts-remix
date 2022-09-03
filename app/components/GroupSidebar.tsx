@@ -1,4 +1,5 @@
 import { Disclosure, Transition } from "@headlessui/react";
+import { ColorInput, ColorSwatch, useMantineTheme } from "@mantine/core";
 import { Contact, ContactGroup } from "@prisma/client";
 import { ActionFunction } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
@@ -18,16 +19,58 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
   const toggleContactModal = ContactStore((state) => state.toggle)
 
   let [isGroupOpen, setGroupIsOpen] = useState(false)
-  const [contactFrequency, setContactFrequency] = useState("Weeks")
 
   function toggleGroupModal() {
     setGroupIsOpen(!isGroupOpen)
   }
 
+  const theme = useMantineTheme();
+  const swatches = Object.keys(theme.colors).map((color) => (
+    <ColorSwatch key={color} color={theme.colors[color][6]} />
+  ));
+
+  const NewGroupModal = ({ toggleGroupModal } : { toggleGroupModal:VoidFunction }) => (
+    <>
+      <Form method="post">
+        <input readOnly hidden name="action" value="addGroup"></input>
+        <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]"> 
+          <div></div> 
+          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='groupName' placeholder="Group Name"/>
+
+          <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Frequency</label>
+          <div className="flex outline-gray-400 border my-2 rounded-lg">
+            <input className="block rounded-lg placeholder-gray-400 p-2 "type="text" name='contactFrequency' placeholder="Contact Frequency"/>
+            <select className="block rounded-lg placeholder-gray-400 p-2 ml-auto" placeholder="Group" name="groupId">
+              <option value="days">Days</option>
+              <option value="weeks">Weeks</option>
+              <option value="months">Months</option>
+              <option value="years">Years</option>
+            </select>
+          </div>
+          
+          <label className='text-right text-gray-400 my-auto'>Group Color</label>
+          <ColorInput
+            placeholder="Pick color"
+            disallowInput
+            withPicker={false}
+            size="md"
+            swatches={['#25262b', '#868e96', '#fa5252', '#e64980', '#be4bdb', '#7950f2', '#4c6ef5', '#228be6', '#15aabf', '#12b886', '#40c057', '#82c91e', '#fab005', '#fd7e14']}
+            />
+        </div>
+
+        <div className="flex space-x-4">
+        </div>
+        <div className="mt-6">
+            <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white" onClick={toggleGroupModal}>Save</button>
+            <button type="button" className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleGroupModal}>Cancel</button> 
+        </div>
+      </Form>
+    </>
+  );
+
   return (
     <div className="bg-indigo-800 text-white h-screen flex flex-col justify-between px-6 w-72">
       <div className="">
-        {/* <div className="mt-12 bg-indigo-50 px-4 py-2 rounded-md text-indigo-900"><GoSearch className="inline mr-3 mb-0.5"/>Search</div> */}
         <button
           onClick={toggleContactModal}
           className="my-12 py-2 px-4 rounded-md bg-indigo-600 flex flex-row justify-between items-center w-full"
@@ -119,7 +162,7 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
                   <button className="font-semibold text-indigo-200 pt-6" onClick={toggleGroupModal}>
                     <BsPlusLg className="inline mr-3 mb-0.5" /> New Category
                   </button>
-                  <Modal modalTitle={"Create Contact Group"} modalBody={<NewGroupModal toggleGroupModal={toggleGroupModal} contactFrequency={contactFrequency} setContactFrequency={setContactFrequency}/>} isOpen={isGroupOpen} action={toggleGroupModal}/>
+                  <Modal modalTitle={"Create Contact Group"} modalBody={<NewGroupModal toggleGroupModal={toggleGroupModal}/>} isOpen={isGroupOpen} action={toggleGroupModal}/>
                 </Disclosure.Panel>
               </Transition>
             </>
@@ -129,57 +172,3 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
     </div>
   );
 }
-
-  const NewGroupModal = ({ toggleGroupModal, contactFrequency, setContactFrequency } : { toggleGroupModal:VoidFunction, contactFrequency:string, setContactFrequency:any }) => (
-    <>
-      <Form method="post">
-        <input readOnly hidden name="action" value="addGroup"></input>
-        <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]"> 
-          <div></div> 
-          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='groupName' placeholder="Group Name"/>
-
-          <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Frequency</label>
-        <div className="flex outline-gray-400 border my-2 rounded-lg">
-          <input className="block rounded-lg placeholder-gray-400 p-2 "type="text" name='contactFrequency' placeholder="Contact Frequency"/>
-          <select className="block rounded-lg placeholder-gray-400 p-2 ml-auto" placeholder="Group" name="groupId">
-            <option value="days">Days</option>
-            <option value="weeks">Weeks</option>
-            <option value="months">Months</option>
-            <option value="years">Years</option>
-          </select>
-        </div>
-
-        {/* <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input> */}
-
-        {/* <Listbox value={contactFrequency} onChange={setContactFrequency} name="contactFrequency">
-        <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-pointer rounded-md py-2 pl-3 pr-10 outline-gray-400 border">
-            <div className="">Test String</div>
-            <HiOutlineSelector/>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            </span>
-          </Listbox.Button>
-          <Transition
-            as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              <Listbox.Option value='1'>1</Listbox.Option>
-              <Listbox.Option value='2'>2</Listbox.Option>
-              <Listbox.Option value='3'>3</Listbox.Option>
-            </Listbox.Options>
-          </Transition>
-        </div>
-      </Listbox> */}
-
-
-        </div>
-        <div className="mt-6">
-            <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white" onClick={toggleGroupModal}>Save</button>
-            <button type="button" className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleGroupModal}>Cancel</button> 
-        </div>
-      </Form>
-    </>
-  );
