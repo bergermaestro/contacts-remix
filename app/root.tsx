@@ -7,14 +7,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import { MantineProvider } from '@mantine/core';
-import { StylesPlaceholder } from '@mantine/remix';
+import { MantineProvider } from "@mantine/core";
+import { StylesPlaceholder } from "@mantine/remix";
 
 import styles from "./styles/app.css";
 
 // https://remix.run/api/app#links
 export function links() {
-  return [{ rel: "stylesheet", href: styles }]
+  return [{ rel: "stylesheet", href: styles }];
 }
 
 export const meta: MetaFunction = () => ({
@@ -25,7 +25,34 @@ export const meta: MetaFunction = () => ({
 
 export default function App() {
   return (
-    <MantineProvider>
+    <MantineProvider
+      theme={{
+        defaultRadius: 'md',
+        primaryColor: 'violet',
+        components: {
+          Input: {
+            defaultProps: {
+              size: "md",
+            },
+          },
+          Select: {
+            defaultProps: {
+              size: "md",
+            },
+          },
+          ColorInput: {
+            defaultProps: {
+              size: "md",
+            },
+          },
+          NumberInput: {
+            defaultProps: {
+              size: "md",
+            },
+          },
+        },
+      }}
+    >
       <html lang="en" className="h-full">
         <head>
           <Meta />

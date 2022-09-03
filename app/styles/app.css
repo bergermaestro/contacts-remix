@@ -695,6 +695,14 @@ video {
   margin-bottom: 0.25rem;
 }
 
+.mr-6 {
+  margin-right: 1.5rem;
+}
+
+.mr-12 {
+  margin-right: 3rem;
+}
+
 .block {
   display: block;
 }
@@ -1244,6 +1252,10 @@ video {
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-light {
+  font-weight: 300;
 }
 
 .uppercase {

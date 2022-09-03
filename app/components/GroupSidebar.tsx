@@ -1,10 +1,11 @@
 import { Disclosure, Transition } from "@headlessui/react";
-import { ColorInput, ColorSwatch, useMantineTheme } from "@mantine/core";
+import { ColorInput, ColorSwatch, Input, NumberInput, useMantineTheme } from "@mantine/core";
 import { Contact, ContactGroup } from "@prisma/client";
 import { ActionFunction } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
 import { useState } from "react";
-import { BsPlusLg } from "react-icons/bs";
+import { BsClock, BsPlusLg } from "react-icons/bs";
+import { IoPeopleOutline } from "react-icons/io5";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { authenticator } from "~/services/auth.server";
 import { ContactGroupStore, ContactStore } from "~/stores/stateStore";
@@ -24,21 +25,27 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
     setGroupIsOpen(!isGroupOpen)
   }
 
-  const theme = useMantineTheme();
-  const swatches = Object.keys(theme.colors).map((color) => (
-    <ColorSwatch key={color} color={theme.colors[color][6]} />
-  ));
-
   const NewGroupModal = ({ toggleGroupModal } : { toggleGroupModal:VoidFunction }) => (
     <>
       <Form method="post">
         <input readOnly hidden name="action" value="addGroup"></input>
         <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]"> 
-          <div></div> 
-          <input className="block outline-gray-400 p-2 my-2 rounded-lg placeholder-gray-400 border"type="text" name='groupName' placeholder="Group Name"/>
+          <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Group Name</label>
+          <Input
+              icon={<IoPeopleOutline />}
+              name="groupName"
+              radius="md"
+          />
 
           <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Frequency</label>
-          <div className="flex outline-gray-400 border my-2 rounded-lg">
+          <NumberInput
+              icon={<BsClock />}
+              name="groupName"
+              radius="md"
+              rightSection={<p className="text-gray-400 mr-12 font-light">Days</p>}
+          />
+
+          {/* <div className="flex outline-gray-400 border my-2 rounded-lg">
             <input className="block rounded-lg placeholder-gray-400 p-2 "type="text" name='contactFrequency' placeholder="Contact Frequency"/>
             <select className="block rounded-lg placeholder-gray-400 p-2 ml-auto" placeholder="Group" name="groupId">
               <option value="days">Days</option>
@@ -46,14 +53,13 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
               <option value="months">Months</option>
               <option value="years">Years</option>
             </select>
-          </div>
+          </div> */}
           
           <label className='text-right text-gray-400 my-auto'>Group Color</label>
           <ColorInput
-            placeholder="Pick color"
             disallowInput
             withPicker={false}
-            size="md"
+            radius="md"
             swatches={['#25262b', '#868e96', '#fa5252', '#e64980', '#be4bdb', '#7950f2', '#4c6ef5', '#228be6', '#15aabf', '#12b886', '#40c057', '#82c91e', '#fab005', '#fd7e14']}
             />
         </div>

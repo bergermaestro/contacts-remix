@@ -22,3 +22,15 @@ export async function getFavorites(accountId: string) {
 export async function insertContact(contact: any) {
     return prisma.contact.create({ data: contact });
 }
+
+// export async function getUpcomingContacts(contactGroupId: string, accountId: string) {
+//   return prisma.contact.findMany({
+//       where: {
+//           accountId,
+//           contactGroupId,
+//           contactDate: {
+//               gt: new Date()
+//           }
+//       }
+//   });
+// }
