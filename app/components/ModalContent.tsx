@@ -98,7 +98,7 @@ export const NewContactModal = ({
           <button
             type="submit"
             className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white"
-            onClick={toggleContactModal}
+            // onClick={toggleContactModal}
           >
             Save
           </button>

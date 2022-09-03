@@ -40,36 +40,13 @@ export const action: ActionFunction = async ({
 
     const action = formData.get("action");
 
-    if (action === 'addContact') {
-      const contactGroupId = formData.get("groupId") as string;
-      const firstName = formData.get('firstName') as string;
-      const lastName = formData.get('lastName') as string
-      const email = formData.get('email') as string
-      const company = formData.get('company') as string
-      const phone = formData.get('phone') as string
-      const isFavorite = text2bool(formData.get('isFavorite') as string)
-      const instagramUsername = formData.get('instagramUsername') as string
-
-      console.log("isFavorite", isFavorite);
-  
-      const contact = {
-        accountId: user.id,
-        contactGroupId,
-        firstName,
-        lastName,
-        email,
-        company,
-        phone,
-        active:true,
-        isFavorite
-      }
-
-      await insertContact(contact);
-  
-    }
-    else if (action === 'addGroup') {
+    if (action === 'addGroup') {
       const groupName = formData.get('groupName') as string;
       const contactFrequency = parseInt(formData.get('contactFrequency') as string);
+      const color = (formData.get('color') as string).split('#')[1];
+
+      console.log("contactFrequency", contactFrequency);
+      console.log("color", color);
 
       console.log("groupName", groupName);
       console.log("contactFrequency", contactFrequency);
@@ -78,7 +55,7 @@ export const action: ActionFunction = async ({
         accountId: user.id, 
         groupName,
         contactFrequency,
-        color: 'blue'
+        color
       }
 
       await insertGroup(contactGroup);

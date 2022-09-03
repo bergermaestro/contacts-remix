@@ -40,7 +40,7 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
           <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Frequency</label>
           <NumberInput
               icon={<BsClock />}
-              name="groupName"
+              name="contactFrequency"
               radius="md"
               rightSection={<p className="text-gray-400 mr-12 font-light">Days</p>}
           />
@@ -57,6 +57,7 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
           
           <label className='text-right text-gray-400 my-auto'>Group Color</label>
           <ColorInput
+            name="color"
             disallowInput
             withPicker={false}
             radius="md"
@@ -67,7 +68,7 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
         <div className="flex space-x-4">
         </div>
         <div className="mt-6">
-            <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white" onClick={toggleGroupModal}>Save</button>
+            <button type="submit" className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white">Save</button>
             <button type="button" className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400" onClick={toggleGroupModal}>Cancel</button> 
         </div>
       </Form>
@@ -147,8 +148,6 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
                 leave="transition-all duration-150"
               >
                 <Disclosure.Panel className="space-y-2 pl-7">
-                  {/* this is needed so that tailwind doesn't purge the classes at build. perhaps figure out a cleaner solution to this */}
-                  <span className="bg-blue-500 bg-green-500 bg-red-500"></span>
                   <Link to="./">
                     <div className="flex flex-row items-center cursor-pointer">
                       <div className="h-3 w-3 rounded-full bg-yellow-500 inline-block mr-4" />{" "}
@@ -159,7 +158,8 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
                     <Link key={group.id} to={`/app/groups/${group.id}`}>
                       <div className="flex flex-row items-center cursor-pointer">
                         <div
-                          className={`h-3 w-3 rounded-full inline-block mr-4 bg-${group.color}-500`}
+                          className={"h-3 w-3 rounded-full inline-block mr-4"}
+                          style={{ backgroundColor: `#${group.color}` }}
                         />{" "}
                         {group.groupName}
                       </div>
