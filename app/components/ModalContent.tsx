@@ -1,7 +1,7 @@
 import { Input, Select, Tooltip } from "@mantine/core";
 import { ContactGroup } from "@prisma/client";
 import { Form } from "@remix-run/react";
-import { IoPeopleOutline } from "react-icons/io5";
+import { IoPeopleOutline, IoStar } from "react-icons/io5";
 import { BsBuilding } from "react-icons/bs";
 
 export const NewContactModal = ({
@@ -14,26 +14,32 @@ export const NewContactModal = ({
   contact: any;
 }) => (
   <>
-    <Form method="post">
+    <Form method="post" action="/app">
       <input readOnly hidden name="action" value="addContact"></input>
       <fieldset>
         <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">
           <div className="w-24 h-24 bg-gray-400 rounded-full"></div>
           <div>
-            <Input
-              sx={{ display: 'inline' }}
-              name="firstName"
-              placeholder="First Name"
-              radius="md"
-              defaultValue={contact.firstName}
-            />
-            <Tooltip label="Favorite this Contact" color="gray" withArrow>
-              <input
-                className="inline p-2 ml-2 h-8 w-8"
-                type="checkbox"
-                name="isFavorite"
-              ></input>
-            </Tooltip>
+            <div className="flex items-center mb-2">
+              <Input
+                sx={{ flex: '1' }}
+                name="firstName"
+                placeholder="First Name"
+                radius="md"
+                defaultValue={contact.firstName}
+                />
+              <Tooltip label="Favorite this Contact" color="gray" withArrow className="ml-3">
+                <label>
+                <input
+                  className="peer hidden"
+                  type="checkbox"
+                  name="isFavorite"
+                  defaultChecked={contact.isFavorite}
+                  ></input>
+                <IoStar size={30} className="text-slate-300 peer-checked:text-yellow-400 cursor-pointer"/>
+                  </label>
+              </Tooltip>
+            </div>
             <Input
               name="lastName"
               placeholder="Last Name"
