@@ -1,34 +1,8 @@
-# Welcome to Remix!
+## Contactly
 
-- [Remix Docs](https://remix.run/docs)
+Contactly is a contacts app where you can group your contacts into contact groups, and then get reminders to reach out to your friends and family on the intervals you have set.
 
-## Deployment
+It is currently in active development, and below are some screenshots of the UI:
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
-
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
-
-```sh
-npm i -g vercel
-vercel
-```
-
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
-
-## Development
-
-To run your Remix app locally, make sure your project's local dependencies are installed:
-
-```sh
-npm install
-```
-
-Afterwards, start the Remix development server like so:
-
-```sh
-npm run dev
-```
-
-Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
-
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+![contactly screenshot of new contact UI](https://res.cloudinary.com/matthewberger/image/upload/v1663125462/Manual%20Upload/contactly-1_pnqvke.png)
+![contactly screenshot of contact list](https://res.cloudinary.com/matthewberger/image/upload/v1663125625/Manual%20Upload/contactly-2_h9s7dm.png)
