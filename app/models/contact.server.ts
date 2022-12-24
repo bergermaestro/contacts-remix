@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import cuid from 'cuid';
 
 const prisma = new PrismaClient()
 
@@ -20,7 +21,13 @@ export async function getFavorites(accountId: string) {
 }
 
 export async function insertContact(contact: any) {
-    return prisma.contact.create({ data: contact });
+    if(contact.id === "") {
+      contact.id = cuid();
+      return prisma.contact.create({ data: contact });
+    }
+    else {
+      return prisma.contact.update({ where: { id: contact.id }, data: contact });
+    }
 }
 
 // export async function getUpcomingContacts(contactGroupId: string, accountId: string) {

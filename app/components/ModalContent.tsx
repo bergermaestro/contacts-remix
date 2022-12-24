@@ -16,6 +16,7 @@ export const NewContactModal = ({
   <>
     <Form method="post" action="/app">
       <input readOnly hidden name="action" value="addContact"></input>
+      <input readOnly hidden name="id" value={contact.id}></input>
       <fieldset>
         <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">
           <div className="w-24 h-24 bg-gray-400 rounded-full"></div>
@@ -104,7 +105,7 @@ export const NewContactModal = ({
           <button
             type="submit"
             className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white"
-            // onClick={toggleContactModal}
+            onClick={toggleContactModal}
           >
             Save
           </button>
