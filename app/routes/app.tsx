@@ -35,6 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
   const action = formData.get("action");
 
   if (action === "addContact") {
+    const id = formData.get("id") as string;
     const contactGroupId = formData.get("groupId") as string;
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
@@ -44,10 +45,10 @@ export const action: ActionFunction = async ({ request }) => {
     const isFavorite = text2bool(formData.get("isFavorite") as string);
     const instagramUsername = formData.get("instagramUsername") as string;
 
-    console.log("isFavorite", isFavorite);
 
     const contact = {
       accountId: user.id,
+      id,
       contactGroupId,
       firstName,
       lastName,
