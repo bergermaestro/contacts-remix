@@ -7,6 +7,8 @@ import Upcoming from "~/components/Upcoming";
 import { getContactsByGroup } from "~/models/contact.server";
 import { getGroup } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
+import {Contact} from "@prisma/client";
+import { useState } from "react";
 
 type LoaderData = {
   contacts: Awaited<ReturnType<typeof getContactsByGroup>>
@@ -29,6 +31,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 export default function PostSlug() {
   const { contacts, group } = useLoaderData() as LoaderData;
+  const [activeContact, setActiveContact] = useState<Contact | null>(null);
+
   return (
     <>
     <div className="mx-auto max-w-4xl">
@@ -37,8 +41,8 @@ export default function PostSlug() {
         <span className="rounded-full bg-indigo-200 py-2 px-4 "><FiClock className="inline mr-2 mb-1" size={20} /> Every {group?.contactFrequency}</span>
         <Upcoming />
 
-        <div className="text-lg">
-          {contacts.map(function(contact, index) {
+        <div className="text-large">
+          {contacts.map((contact) => {
             return (
               <div key={contact.id}>
                 <Link to={`./${contact.id}`}>

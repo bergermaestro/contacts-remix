@@ -21,6 +21,8 @@ export async function getFavorites(accountId: string) {
 }
 
 export async function insertContact(contact: any) {
+    console.log("contact.accountId", contact.accountId)
+
     if(contact.id === "") {
       contact.id = cuid();
       return prisma.contact.create({ data: contact });
