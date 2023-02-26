@@ -1,13 +1,13 @@
 import { Outlet } from "@remix-run/react";
 import GroupSidebar from "~/components/GroupSidebar";
 import { json, useLoaderData } from 'superjson-remix';
-import { Account } from "@prisma/client";
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { getFavorites, insertContact } from "~/models/contact.server";
+import type { Account } from "@prisma/client";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { getFavorites } from "~/models/contact.server";
 import { getGroups, insertGroup } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
 import { getSession } from "~/services/session.server";
-import { text2bool } from "~/utils/serde";
+import {getTimeLengthInMs} from "~/utils/common_functions";
 
 type LoaderData = {
      favorites: Awaited<ReturnType<typeof getFavorites>>;
@@ -43,18 +43,15 @@ export const action: ActionFunction = async ({
     if (action === 'addGroup') {
       const groupName = formData.get('groupName') as string;
       const contactFrequency = parseInt(formData.get('contactFrequency') as string);
+      const contactFrequencyUnit = formData.get('contactFrequencyUnit') as string;
       const color = (formData.get('color') as string).split('#')[1];
 
-      console.log("contactFrequency", contactFrequency);
-      console.log("color", color);
-
-      console.log("groupName", groupName);
-      console.log("contactFrequency", contactFrequency);
+      const contactFrequencyMS = getTimeLengthInMs(contactFrequency, contactFrequencyUnit);
 
       const contactGroup = {
         accountId: user.id, 
         groupName,
-        contactFrequency,
+        "contactFrequency": contactFrequencyMS,
         color
       }
 
@@ -74,3 +71,5 @@ export default function Groups() {
     </div>
   );
 }
+
+

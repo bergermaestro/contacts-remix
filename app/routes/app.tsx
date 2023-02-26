@@ -1,4 +1,4 @@
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import {ActionFunction, fetch, LoaderFunction} from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 import { json, useLoaderData } from "superjson-remix";
 import Modal from "~/components/base/Modal";
@@ -10,6 +10,7 @@ import { authenticator } from "~/services/auth.server";
 import { getSession } from "~/services/session.server";
 import { ContactStore } from "~/stores/stateStore";
 import { text2bool } from "~/utils/serde";
+import { generateS3UploadURL } from "~/services/s3upload.server";
 
 type LoaderData = {
   groups: Awaited<ReturnType<typeof getGroups>>;
@@ -45,6 +46,22 @@ export const action: ActionFunction = async ({ request }) => {
     const isFavorite = text2bool(formData.get("isFavorite") as string);
     const instagramUsername = formData.get("instagramUsername") as string;
 
+    const profilePicture = formData.get("profilePicture");
+
+    const url = await generateS3UploadURL();
+
+    await fetch(url,{
+        method: "PUT",
+        body: profilePicture,
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    })
+    const imageUrl = url.split("?")[0];
+
+    console.log("url: ", url)
+    console.log("profilePicture: ", profilePicture)
+
 
     const contact = {
       accountId: user.id,
@@ -57,6 +74,7 @@ export const action: ActionFunction = async ({ request }) => {
       phone,
       active: true,
       isFavorite,
+      profileURL: imageUrl,
     };
 
     await insertContact(contact);

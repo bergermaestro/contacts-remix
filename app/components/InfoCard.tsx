@@ -1,8 +1,9 @@
 import { Contact, ContactGroup } from "@prisma/client";
 import { useState } from "react";
-import { ContactStore } from "~/stores/stateStore";
 import Modal from "./base/Modal";
 import { NewContactModal } from "./ModalContent";
+import { Avatar } from '@mantine/core';
+import {getInitials} from "~/utils/common_functions";
 
 const InfoCard = ({contact, groups}: {contact:Contact, groups:ContactGroup[]}) => {
   // const toggleContactModal = ContactStore((state) => state.toggle)
@@ -19,9 +20,12 @@ const InfoCard = ({contact, groups}: {contact:Contact, groups:ContactGroup[]}) =
   }
 
   return (
-    <div className="bg-indigo-100 h-3/5 py-24 px-12 ml-24 my-auto rounded-lg text-indigo-800">
+    <div className="bg-indigo-100 h-3/5 pt-12 pb-24 px-12 ml-24 my-auto rounded-lg text-indigo-800">
 
-    <h2 className="font-bold text-4xl">{contact.firstName} {contact.lastName}</h2>
+    {/*<img src={contact.profileURL || undefined} alt={contact.firstName} className="h-24 w-24 rounded-full"></img>*/}
+    <Avatar size="xl" color="indigo" className="rounded-full h-24 w-24" src={contact.profileURL} alt={contact.firstName}>{getInitials(contact.firstName || "", contact.lastName || "")}</Avatar>
+
+    <h2 className="font-bold text-4xl pt-4">{contact.firstName} {contact.lastName}</h2>
     <h4>{contact.company}</h4>
 
     <div className="h-12"></div>

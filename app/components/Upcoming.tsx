@@ -1,28 +1,36 @@
-const Upcoming = () => {
+import type {Contact} from "@prisma/client";
+
+export default function Upcoming({contacts}: {contacts: Contact[]}) {
   return (
     <div className="py-12 w-96 text-indigo-800">
         <h2 className="text-2xl font-semibold pb-3">Upcoming Soon</h2>
         <div>
-            <div>
-                <div className="flex flex-row justify-between pb-2 mx-4">
-                    <span className="font-bold text-md">Jane Cooper</span>
-                    <span>2 days ago</span>
-                </div>
-                    <hr className="pb-4"/>
-            </div>
-
-            <div>
-                <div className="flex flex-row justify-between pb-2 mx-4">
-                    <span className="font-bold text-md">Jane Cooper</span>
-                    <span>4 days</span>
-                </div>
-                    <hr className="pb-4"/>
-            </div>
-
+            {contacts.slice(0, 5).map((contact) => {
+                return (
+                    <div key={contact.id}>
+                        <div className="flex flex-row justify-between pb-2 mx-4">
+                            <span className="font-bold text-md">{contact.firstName} {contact.lastName}</span>
+                            <span>{displayDate(new Date(contact.lastContacted))}</span>
+                        </div>
+                        <hr className="pb-4"/>
+                    </div>
+                    )
+                })
+            }
         </div>
     </div>
-    
   )
 }
 
-export default Upcoming
+function displayDate(date: Date): string {
+    const now = new Date();
+    const twoWeeksInMs = 1209600000;
+    const diff = date.getTime() - now.getTime();
+    const absDiff = Math.abs(diff);
+
+    if (absDiff < twoWeeksInMs) {
+        return diff > 0 ? `In ${Math.ceil(absDiff / 86400000)} days` : `${Math.ceil(absDiff / 86400000)} days ago`;
+    } else {
+        return date.toLocaleDateString("en-US");
+    }
+}

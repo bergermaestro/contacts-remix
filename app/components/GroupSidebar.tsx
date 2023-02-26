@@ -1,7 +1,7 @@
 import { Disclosure, Transition } from "@headlessui/react";
-import { ColorInput, Input, NumberInput } from "@mantine/core";
-import { Contact, ContactGroup } from "@prisma/client";
-import { ActionFunction } from "@remix-run/node";
+import {ColorInput, Input, NumberInput, Select } from "@mantine/core";
+import type { Contact, ContactGroup } from "@prisma/client";
+import type { ActionFunction } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
 import { useState } from "react";
 import { BsClock, BsPlusLg } from "react-icons/bs";
@@ -38,13 +38,26 @@ export default function GroupSidebar({ favorites, groups } : { favorites:Contact
           />
 
           <label htmlFor='frequency' className='text-right text-gray-400 my-auto'>Frequency</label>
-          <NumberInput
-              icon={<BsClock />}
-              name="contactFrequency"
-              radius="md"
-              rightSection={<p className="text-gray-400 mr-12 font-light">Days</p>}
-          />
-          
+            <div className="flex overflow-scroll">
+                <NumberInput
+                    sx={{'border-radius': 0}}
+                    icon={<BsClock/>}
+                    name="contactFrequency"
+                    radius="md"
+                    rightSection={<p></p>}
+                />
+                <Select
+                    defaultValue="Days"
+                    name="contactFrequencyUnit"
+                    data={[
+                        {value: 'days', label: 'Days'},
+                        {value: 'weeks', label: 'Weeks'},
+                        {value: 'months', label: 'Months'},
+                        {value: 'years', label: 'Years'},
+                    ]}
+                />
+            </div>
+
           <label className='text-right text-gray-400 my-auto'>Group Color</label>
           <ColorInput
             name="color"

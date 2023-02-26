@@ -10,12 +10,18 @@ export function NewContactModal({groups, toggleContactModal, contact,}:
     const fetcher = useFetcher();
 
     return (
-        <fetcher.Form method="post" action="/app">
+        <fetcher.Form method="post" action="/app" encType="multipart/form-data">
             <input readOnly hidden name="action" value="addContact"></input>
             <input readOnly hidden name="id" value={contact.id}></input>
             <fieldset>
                 <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">
-                    <div className="w-24 h-24 bg-gray-400 rounded-full"></div>
+                    {/*<div className="w-24 h-24 bg-gray-400 rounded-full"></div>*/}
+                    {/*<input type="file" name="profilePicture" className="appearance-none focus:outline-none hover:bg-gray-200 w-24 h-24 rounded-full bg-gray-300"/>*/}
+                    <label>
+                        <input name="profilePicture" type="file" className="opacity-0 w-0 h-0" hidden></input>
+                        { contact.profileURL ? <img className="w-24 h-24 rounded-full" src={contact.profileURL} alt={contact.firstName}></img>
+                        : <div className="w-24 h-24 bg-slate-300 hover:bg-slate-200 rounded-full cursor-pointer"></div> }
+                    </label>
                     <div>
                         <div className="flex items-center mb-2">
                             <Input
