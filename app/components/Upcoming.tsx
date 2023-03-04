@@ -1,6 +1,11 @@
 import type {Contact} from "@prisma/client";
+import {ContactStore} from "~/stores/stateStore";
 
 export default function Upcoming({contacts}: {contacts: Contact[]}) {
+
+    const [setActiveContact] = ContactStore((state) => [state.setActiveContact]);
+
+
   return (
     <div className="py-12 w-96 text-indigo-800">
         <h2 className="text-2xl font-semibold pb-3">Upcoming Soon</h2>
@@ -9,8 +14,8 @@ export default function Upcoming({contacts}: {contacts: Contact[]}) {
                 return (
                     <div key={contact.id}>
                         <div className="flex flex-row justify-between pb-2 mx-4">
-                            <span className="font-bold text-md">{contact.firstName} {contact.lastName}</span>
-                            <span>{displayDate(new Date(contact.lastContacted))}</span>
+                            <button className="font-bold text-md" onClick={() => setActiveContact(contact)}>{contact.firstName} {contact.lastName}</button>
+                            <span>{displayDate(new Date(contact.lastContacted || ""))}</span>
                         </div>
                         <hr className="pb-4"/>
                     </div>

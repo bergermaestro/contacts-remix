@@ -18,7 +18,7 @@ export async function getGroup(id: string) {
     return prisma.contactGroup.findUnique({ where: { id } });
 }
 
-export async function insertGroup(group:ContactGroup) {
+export async function insertGroup(group: { accountId: any; groupName: string; color: string; contactFrequency: number }) {
     console.log("\n\n\nGROUP", group);
     return prisma.contactGroup.create({ data: group });
 }

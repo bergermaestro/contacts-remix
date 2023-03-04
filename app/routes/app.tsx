@@ -3,7 +3,7 @@ import { Outlet } from "@remix-run/react";
 import { json, useLoaderData } from "superjson-remix";
 import Modal from "~/components/base/Modal";
 import Sidebar from "~/components/base/Sidebar";
-import { NewContactModal } from "~/components/ModalContent";
+import { ContactModal } from "~/components/modals/ContactModal";
 import { insertContact } from "~/models/contact.server";
 import { getGroups } from "~/models/group.server";
 import { authenticator } from "~/services/auth.server";
@@ -85,27 +85,20 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Groups() {
   const { groups } = useLoaderData();
-  const isContactOpen = ContactStore((state) => state.isVisible);
-  const toggleContactModal = ContactStore((state) => state.toggle);
+  const [isContactModalOpen, toggleContactModal, activeContact] = ContactStore((state) => [state.isModalOpen, state.toggleModal, state.activeContact]);
 
-  const contact = {};
 
   return (
-    <div className="text-indigo-900 grid grid-cols-[65px_1fr]">
-      <Sidebar />
-      <Outlet />
-      <Modal
-        modalTitle={"Create Contact"}
-        modalBody={
-          <NewContactModal
-            groups={groups}
-            toggleContactModal={toggleContactModal}
-            contact={contact}
-          />
-        }
-        isOpen={isContactOpen}
-        action={toggleContactModal}
-      />
-    </div>
+      <>
+        {/* Contact Modal */}
+        <Modal modalTitle={`${activeContact?.id ? 'Edit' : 'Create'} Contact`} isOpen={isContactModalOpen} action={toggleContactModal}
+               modalBody={<ContactModal groups={groups} toggleContactModal={toggleContactModal} contact={activeContact}/>}
+        />
+
+        <div className="text-indigo-900 grid grid-cols-[65px_1fr]">
+          <Sidebar/>
+          <Outlet/>
+        </div>
+      </>
   );
 }

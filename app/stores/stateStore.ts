@@ -1,23 +1,18 @@
 import create from 'zustand'
+import type {Contact} from "@prisma/client";
 
-interface ContactStore {
-    isVisible: boolean
-    toggle: () => void
+// CONTACT STORE
+
+interface ContactStoreInterface {
+    activeContact: Contact | {}
+    setActiveContact: (contact: Contact | {}) => void
+    isModalOpen: boolean
+    toggleModal: () => void
 }
 
-export const ContactStore = create<ContactStore>(set => ({
-  isVisible: false,
-  toggle: () => set((state) => ({ isVisible: !state.isVisible }))
-}))
-
-
-
-interface ContactGroupStore {
-  isVisible: boolean
-  toggle: () => void
-}
-
-export const ContactGroupStore = create<ContactGroupStore>(set => ({
-isVisible: false,
-toggle: () => set((state) => ({ isVisible: !state.isVisible }))
+export const ContactStore = create<ContactStoreInterface>(set => ({
+    activeContact: {},
+    setActiveContact: (contact) => set(() => ({ activeContact: contact })),
+    isModalOpen: false,
+    toggleModal: () => set((state) => ({ isModalOpen: !state.isModalOpen }))
 }))

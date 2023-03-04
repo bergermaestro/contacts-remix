@@ -58,6 +58,8 @@ export const action: ActionFunction = async ({
       await insertGroup(contactGroup);
 
     }
+    // else if action === set active contact
+
     return formData;
 };
 
@@ -67,6 +69,7 @@ export default function Groups() {
   return (
     <div className="grid grid-cols-[minmax(300px,_1fr)_4fr_4fr]">
      <GroupSidebar favorites={favorites} groups={groups}/>
+
       <Outlet />
     </div>
   );

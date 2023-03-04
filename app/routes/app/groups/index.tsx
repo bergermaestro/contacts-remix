@@ -10,6 +10,8 @@ import {alphabetizeContacts} from "~/utils/common_functions";
 import {useEffect, useState} from "react";
 import type {Contact} from "@prisma/client";
 import InfoCard from "~/components/InfoCard";
+import {ContactStore} from "~/stores/stateStore";
+import invariant from "tiny-invariant";
 
 type LoaderData = {
     contacts: Awaited<ReturnType<typeof getContacts>>
@@ -30,27 +32,12 @@ export const loader: LoaderFunction = async ({params, request}) => {
     });
 };
 
-
-export const action: ActionFunction = async ({request}) => {
-    const formData = await request.formData();
-    let values = Object.fromEntries(formData);
-
-    let contactData = {};
-
-    await getContact(values.contactId.toString()).then((contact) => {
-        contact ? contactData = contact : contactData = {};
-    });
-
-    return contactData;
-
-}
-
-
 export default function PostSlug() {
     const {contacts, upcomingContacts, groups} = useLoaderData();
 
     const alphabetizedContacts = alphabetizeContacts(contacts);
-    const [activeContact, setActiveContact] = useState({} as Contact);
+
+    const [setActiveContact, activeContact] = ContactStore((state) => [state.setActiveContact, state.activeContact]);
 
     console.log("upcomingContacts: ", upcomingContacts)
 
@@ -71,9 +58,9 @@ export default function PostSlug() {
                                         id={letter}>{letter}</h2>
                                     {alphabetizedContacts[letter].map((contact) => {
                                         return (
-                                            <div key={contact.id}>
-                                                <ContactEntry contact={contact} setActiveContact={setActiveContact}/>
-                                            </div>
+                                            <button key={contact.id} onClick={() => setActiveContact(contact)} className="block">
+                                                <span>{contact.firstName}</span> <b>{contact.lastName}</b>
+                                            </button>
                                         )
                                     })}
                                 </div>
@@ -89,27 +76,3 @@ export default function PostSlug() {
         </>
     );
 }
-
-function ContactEntry({contact, setActiveContact}: { contact: Contact, setActiveContact: any }) {
-    const contactData = useFetcher();
-
-    useEffect(() => {
-        if (contactData.type === "done") {
-            setActiveContact(contactData.data);
-        }
-    }, [contactData, setActiveContact])
-
-    return (
-        <contactData.Form method="post">
-            <input type="hidden" name="contactId" value={contact.id}>
-            </input>
-            <button
-                type="submit"
-                name="_action"
-                value="select">
-                <span>{contact.firstName}</span> <b>{contact.lastName}</b>
-            </button>
-        </contactData.Form>
-    )
-}
-

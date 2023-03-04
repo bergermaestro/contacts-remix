@@ -3,16 +3,17 @@ import {ContactGroup} from "@prisma/client";
 import {useFetcher} from "@remix-run/react";
 import {IoPeopleOutline, IoStar} from "react-icons/io5";
 import {BsBuilding} from "react-icons/bs";
+// import {ActiveContactStore} from "~/stores/stateStore";
 
-export function NewContactModal({groups, toggleContactModal, contact,}:
-                                    { groups: ContactGroup[]; toggleContactModal: VoidFunction; contact: any; }) {
+export function ContactModal({groups, toggleContactModal, contact,}:
+                                    { groups: ContactGroup[]; toggleContactModal: () => void; contact: any; }) {
 
     const fetcher = useFetcher();
 
     return (
         <fetcher.Form method="post" action="/app" encType="multipart/form-data">
             <input readOnly hidden name="action" value="addContact"></input>
-            <input readOnly hidden name="id" value={contact.id}></input>
+            <input readOnly hidden name="id" value={contact?.id}></input>
             <fieldset>
                 <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">
                     {/*<div className="w-24 h-24 bg-gray-400 rounded-full"></div>*/}

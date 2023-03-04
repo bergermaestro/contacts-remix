@@ -24,7 +24,7 @@ export async function getFavorites(accountId: string) {
     return prisma.contact.findMany({ where: { accountId, isFavorite: true } });
 }
 
-export async function insertContact(contact: Contact) {
+export async function insertContact(contact: { profileURL: string; accountId: any; firstName: string; lastName: string; phone: string; contactGroupId: string; active: boolean; company: string; id: string; email: string; isFavorite: boolean }) {
     console.log("contact.accountId", contact.accountId)
 
     if(contact.id === "") {
