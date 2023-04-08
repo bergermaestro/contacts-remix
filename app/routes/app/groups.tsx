@@ -16,6 +16,10 @@ type LoaderData = {
   };
 
   export const loader: LoaderFunction = async ({ request }) => {
+
+    console.log("groups.tsx loader");
+
+
     let user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/login",
     });
@@ -58,7 +62,6 @@ export const action: ActionFunction = async ({
       await insertGroup(contactGroup);
 
     }
-    // else if action === set active contact
 
     return formData;
 };

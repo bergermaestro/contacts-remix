@@ -1,14 +1,23 @@
 import {Input, Select, Tooltip} from "@mantine/core";
-import {ContactGroup} from "@prisma/client";
+import type {ContactGroup} from "@prisma/client";
 import {useFetcher} from "@remix-run/react";
 import {IoPeopleOutline, IoStar} from "react-icons/io5";
 import {BsBuilding} from "react-icons/bs";
+import {useEffect} from "react";
 // import {ActiveContactStore} from "~/stores/stateStore";
 
 export function ContactModal({groups, toggleContactModal, contact,}:
                                     { groups: ContactGroup[]; toggleContactModal: () => void; contact: any; }) {
 
     const fetcher = useFetcher();
+
+    // useEffect(() => {
+    //     console.log("fetcher.type", fetcher.type);
+    //     if (fetcher.type === "actionSubmission") {
+    //         console.log("fetcher.load('/app/groups')");
+    //         fetcher.load(`/app`)
+    //     }
+    // }, [fetcher]);
 
     return (
         <fetcher.Form method="post" action="/app" encType="multipart/form-data">

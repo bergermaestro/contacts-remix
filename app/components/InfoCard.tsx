@@ -1,8 +1,5 @@
-import { Contact, ContactGroup } from "@prisma/client";
-import { useState } from "react";
-import Modal from "./base/Modal";
-import { ContactModal } from "./modals/ContactModal";
-import { Avatar } from '@mantine/core';
+import type {Contact, ContactGroup} from "@prisma/client";
+import {Avatar} from '@mantine/core';
 import {getInitials} from "~/utils/common_functions";
 import {ContactStore} from "~/stores/stateStore";
 
@@ -17,6 +14,7 @@ const InfoCard = ({contact, groups}: {contact?:Contact, groups:ContactGroup[]}) 
     toggleContactModal();
     setActiveContact(contact)
   }
+
   
   if(!contact) {
     return (
@@ -26,11 +24,6 @@ const InfoCard = ({contact, groups}: {contact?:Contact, groups:ContactGroup[]}) 
 
   return (
       <>
-        {/*<Modal modalTitle={`${contact.id ? 'Edit' : 'Create'} Contact`}*/}
-        {/*       modalBody={<ContactModal groups={groups} toggleContactModal={toggleContactModal} contact={contact}/>}*/}
-        {/*       isOpen={isContactOpen} action={toggleContactModal}/>*/}
-
-
         <div className="bg-indigo-100 h-4/5 pt-12 pb-24 px-12 ml-24 my-auto rounded-lg text-indigo-800">
 
           <Avatar size="xl" color="indigo" className="rounded-full h-24 w-24" src={contact.profileURL}

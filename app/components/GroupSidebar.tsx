@@ -1,11 +1,10 @@
 import {Dialog, Disclosure, Transition} from "@headlessui/react";
-import {Avatar, ColorInput, Input, Menu, NumberInput, Select} from "@mantine/core";
+import {Avatar, Menu} from "@mantine/core";
 import type {Contact, ContactGroup} from "@prisma/client";
 import type {ActionFunction} from "@remix-run/node";
-import {Form, Link, useFetcher} from "@remix-run/react";
+import {Link, useFetcher} from "@remix-run/react";
 import {useEffect, useState} from "react";
-import {BsClock, BsPlusLg} from "react-icons/bs";
-import {IoPeopleOutline} from "react-icons/io5";
+import {BsPlusLg} from "react-icons/bs";
 import {MdKeyboardArrowDown} from "react-icons/md";
 import {authenticator} from "~/services/auth.server";
 import {ContactStore} from "~/stores/stateStore";
@@ -21,9 +20,6 @@ export const action: ActionFunction = async ({request}) => {
 export default function GroupSidebar({favorites, groups}: { favorites: Contact[], groups: ContactGroup[] }) {
 
     const [toggleContactModal, setActiveContact] = ContactStore((state) => [state.toggleModal, state.setActiveContact]);
-
-    // const toggleContactModal = ContactStore((state) => state.setModalVisibility())
-    // const setActiveContact = ContactStore((state) => state.setActiveContact);
 
     const [isGroupOpen, setGroupIsOpen] = useState(false)
     const [isGroupContextOpen, setGroupContextOpen] = useState(false)

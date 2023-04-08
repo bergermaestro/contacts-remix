@@ -1,4 +1,3 @@
-import {ContactGroup} from "@prisma/client";
 import {Form} from "@remix-run/react";
 import {ColorInput, Input, NumberInput, Select} from "@mantine/core";
 import {IoPeopleOutline} from "react-icons/io5";
@@ -6,7 +5,7 @@ import {BsClock} from "react-icons/bs";
 
 export const NewGroupModal = ({toggleGroupModal, group}: { toggleGroupModal: VoidFunction, group?:any }) => (
     <>
-        <Form method="post">
+        <Form method="post" reloadDocument>
             <input readOnly hidden name="action" value="addGroup"></input>
             <div className="grid w-3/4 gap-2 grid-cols-[1fr_3fr]">
                 <label htmlFor="frequency" className="text-right text-gray-400 my-auto">Group Name</label>
@@ -55,7 +54,8 @@ export const NewGroupModal = ({toggleGroupModal, group}: { toggleGroupModal: Voi
             </div>
             <div className="mt-6">
                 <button type="submit"
-                        className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white">Save
+                        className="py-2 px-4 mr-2 rounded-lg bg-indigo-900 border-2 border-indigo-900 text-white"
+                        onClick={toggleGroupModal}>Save
                 </button>
                 <button type="button" className="py-2 px-4 rounded-lg border-2 border-indigo-400 text-indigo-400"
                         onClick={toggleGroupModal}>Cancel

@@ -1,17 +1,12 @@
-import type {ActionFunction, LoaderFunction} from "@remix-run/node";
-import {useFetcher} from "@remix-run/react";
-import {FiClock} from "react-icons/fi";
+import type {LoaderFunction} from "@remix-run/node";
 import {json, useLoaderData} from 'superjson-remix';
 import Upcoming from "~/components/Upcoming";
-import {getContact, getContacts, getUpcomingContacts} from "~/models/contact.server";
+import {getContacts, getUpcomingContacts} from "~/models/contact.server";
 import {getGroups} from "~/models/group.server";
 import {authenticator} from "~/services/auth.server";
 import {alphabetizeContacts} from "~/utils/common_functions";
-import {useEffect, useState} from "react";
-import type {Contact} from "@prisma/client";
 import InfoCard from "~/components/InfoCard";
 import {ContactStore} from "~/stores/stateStore";
-import invariant from "tiny-invariant";
 
 type LoaderData = {
     contacts: Awaited<ReturnType<typeof getContacts>>
